@@ -1,0 +1,28 @@
+{
+  "name": "api-willchat",
+  "version": "1.0.0",
+  "description": "Api created by will corporation to willchat",
+  "main": "server.ts",
+  "repository": "https://github.com/Williancc1557/api-willchat",
+  "author": "Willian Cavalcanti Coelho",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "test": "jest --passWithNoTests --silent --noStackTrace --RunInBand",
+    "test:verbose": "jest --passWithNoTests --runInBand",
+    "test:unit": "yarn test -- --watch -c jest-unit-config.js",
+    "test:integration": "yarn test -- --watch -c jest-integration-config.js",
+    "test:ci": "yarn test -- --coverage"
+  },
+  "devDependencies": {
+    "@techmmunity/eslint-config": "^5.2.4",
+    "@types/jest": "^29.2.0",
+    "eslint": "^8.26.0",
+    "husky": "^8.0.1",
+    "jest": "^29.2.2",
+    "prettier": "^2.7.1",
+    "ts-jest": "^29.0.3",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^4.8.4"
+  }
+}
