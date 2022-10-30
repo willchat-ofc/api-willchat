@@ -30,11 +30,19 @@ const fakeHttpRequest = {
 };
 
 describe("SaveUser Controller", () => {
-  test("ensure return Error if validator returns an Error", async () => {
+  test("should return an Error if validator returns an Error", async () => {
     const { sut, validator } = makeSut();
     jest.spyOn(validator, "validate").mockReturnValue(new Error());
     const request = await sut.handle(fakeHttpRequest);
 
     expect(request).toStrictEqual(badRequest(new Error()));
+  });
+
+  test("should return an Error if validator is not called with valid values", async () => {
+    const { sut, validator } = makeSut();
+    const validateSpy = jest.spyOn(validator, "validate");
+    await sut.handle(fakeHttpRequest);
+
+    expect(validateSpy).toBeCalledWith(fakeHttpRequest.body);
   });
 });
