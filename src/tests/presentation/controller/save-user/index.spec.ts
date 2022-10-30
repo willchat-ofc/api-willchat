@@ -1,4 +1,4 @@
-import { SaveUserController } from "../../../../presentation/controller/save-user";
+import { SaveKeyController } from "../../../../presentation/controller/save-key";
 import { badRequest } from "../../../../presentation/helpers/http-helper";
 import type { Validation } from "../../../../presentation/protocols/validation";
 
@@ -15,7 +15,7 @@ const makeValidatorSut = (): Validation => {
 
 const makeSut = () => {
   const validator = makeValidatorSut();
-  const sut = new SaveUserController(validator);
+  const sut = new SaveKeyController(validator);
 
   return {
     sut,
@@ -29,7 +29,7 @@ const fakeHttpRequest = {
   },
 };
 
-describe("SaveUser Controller", () => {
+describe("SaveKey Controller", () => {
   test("should return an Error if validator returns an Error", async () => {
     const { sut, validator } = makeSut();
     jest.spyOn(validator, "validate").mockReturnValue(new Error());
