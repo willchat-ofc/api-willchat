@@ -111,4 +111,12 @@ describe("SaveKey Controller", () => {
 
     expect(request).toStrictEqual(serverError());
   });
+
+  test("should call saveKey with correct values", async () => {
+    const { sut, saveKey } = makeSut();
+    const decodeSpy = jest.spyOn(saveKey, "save");
+    await sut.handle(fakeHttpRequest);
+
+    expect(decodeSpy).toBeCalledWith({ userId: "fake-account-id" });
+  });
 });
