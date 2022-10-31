@@ -1,25 +1,47 @@
 import { SaveKeyController } from "../../../../presentation/controller/save-key";
-import { badRequest } from "../../../../presentation/helpers/http-helper";
+import {
+  badRequest,
+  serverError,
+} from "../../../../presentation/helpers/http-helper";
+import type { DecodeJwt } from "../../../../presentation/protocols/decode-jwt";
 import type { Validation } from "../../../../presentation/protocols/validation";
 
 const makeValidatorSut = (): Validation => {
-  class Validator implements Validation {
+  class ValidatorStub implements Validation {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public validate(input: any): Error {
       return;
     }
   }
 
-  return new Validator();
+  return new ValidatorStub();
+};
+
+const makeDecodeJwt = (): DecodeJwt => {
+  class DecodeJwtStub implements DecodeJwt {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public decode(jwt: string) {
+      return {
+        accountId: "fake-account-id",
+        sub: "client",
+        iat: 1667171037,
+        exp: 1667171337,
+      };
+    }
+  }
+
+  return new DecodeJwtStub();
 };
 
 const makeSut = () => {
+  const decodeJwt = makeDecodeJwt();
   const validator = makeValidatorSut();
-  const sut = new SaveKeyController(validator);
+  const sut = new SaveKeyController(validator, decodeJwt);
 
   return {
     sut,
     validator,
+    decodeJwt,
   };
 };
 
@@ -44,5 +66,16 @@ describe("SaveKey Controller", () => {
     await sut.handle(fakeHttpRequest);
 
     expect(validateSpy).toBeCalledWith(fakeHttpRequest.body);
+  });
+
+  test("should return serverError if decodeJwt throws", async () => {
+    const { sut, decodeJwt } = makeSut();
+    jest.spyOn(decodeJwt, "decode").mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const request = await sut.handle(fakeHttpRequest);
+
+    expect(request).toStrictEqual(serverError());
   });
 });
