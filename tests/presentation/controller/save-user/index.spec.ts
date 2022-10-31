@@ -1,14 +1,14 @@
 import type {
   SaveKey,
   SaveKeyInput,
-} from "../../../../domain/usecase/save-key";
-import { SaveKeyController } from "../../../../presentation/controller/save-key";
+} from "../../../../src/domain/usecase/save-key";
+import { SaveKeyController } from "../../../../src/presentation/controller/save-key";
 import {
   badRequest,
   serverError,
-} from "../../../../presentation/helpers/http-helper";
-import type { DecodeJwt } from "../../../../presentation/protocols/decode-jwt";
-import type { Validation } from "../../../../presentation/protocols/validation";
+} from "../../../../src/presentation/helpers/http-helper";
+import type { DecodeJwt } from "../../../../src/presentation/protocols/decode-jwt";
+import type { Validation } from "../../../../src/presentation/protocols/validation";
 
 const makeValidatorStub = (): Validation => {
   class ValidatorStub implements Validation {
