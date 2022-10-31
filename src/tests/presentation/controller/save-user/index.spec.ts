@@ -1,3 +1,7 @@
+import type {
+  SaveKey,
+  SaveKeyInput,
+} from "../../../../domain/usecase/save-key";
 import { SaveKeyController } from "../../../../presentation/controller/save-key";
 import {
   badRequest,
@@ -6,7 +10,7 @@ import {
 import type { DecodeJwt } from "../../../../presentation/protocols/decode-jwt";
 import type { Validation } from "../../../../presentation/protocols/validation";
 
-const makeValidatorSut = (): Validation => {
+const makeValidatorStub = (): Validation => {
   class ValidatorStub implements Validation {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public validate(input: any): Error {
@@ -17,7 +21,7 @@ const makeValidatorSut = (): Validation => {
   return new ValidatorStub();
 };
 
-const makeDecodeJwt = (): DecodeJwt => {
+const makeDecodeJwtStub = (): DecodeJwt => {
   class DecodeJwtStub implements DecodeJwt {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public decode(jwt: string) {
@@ -33,15 +37,28 @@ const makeDecodeJwt = (): DecodeJwt => {
   return new DecodeJwtStub();
 };
 
+const makeSaveKeyStub = (): SaveKey => {
+  class SaveKeyStub implements SaveKey {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public save(data: SaveKeyInput): Promise<void> {
+      return;
+    }
+  }
+
+  return new SaveKeyStub();
+};
+
 const makeSut = () => {
-  const decodeJwt = makeDecodeJwt();
-  const validator = makeValidatorSut();
-  const sut = new SaveKeyController(validator, decodeJwt);
+  const decodeJwt = makeDecodeJwtStub();
+  const validator = makeValidatorStub();
+  const saveKey = makeSaveKeyStub();
+  const sut = new SaveKeyController(validator, decodeJwt, saveKey);
 
   return {
     sut,
     validator,
     decodeJwt,
+    saveKey,
   };
 };
 
@@ -60,7 +77,7 @@ describe("SaveKey Controller", () => {
     expect(request).toStrictEqual(badRequest(new Error()));
   });
 
-  test("should return an Error if validator is not called with valid values", async () => {
+  test("should call validator with correct values", async () => {
     const { sut, validator } = makeSut();
     const validateSpy = jest.spyOn(validator, "validate");
     await sut.handle(fakeHttpRequest);
@@ -74,6 +91,22 @@ describe("SaveKey Controller", () => {
       throw new Error();
     });
 
+    const request = await sut.handle(fakeHttpRequest);
+
+    expect(request).toStrictEqual(serverError());
+  });
+
+  test("should call decode with correct values", async () => {
+    const { sut, decodeJwt } = makeSut();
+    const decodeSpy = jest.spyOn(decodeJwt, "decode");
+    await sut.handle(fakeHttpRequest);
+
+    expect(decodeSpy).toBeCalledWith(fakeHttpRequest.body.accessToken);
+  });
+
+  test("should return serverError if saveKey throws", async () => {
+    const { sut, saveKey } = makeSut();
+    jest.spyOn(saveKey, "save").mockRejectedValueOnce(new Error());
     const request = await sut.handle(fakeHttpRequest);
 
     expect(request).toStrictEqual(serverError());
