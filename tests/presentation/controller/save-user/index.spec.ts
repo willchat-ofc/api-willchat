@@ -3,6 +3,7 @@ import type {
   SaveKeyInput,
 } from "../../../../src/domain/usecase/save-key";
 import { SaveKeyController } from "../../../../src/presentation/controller/save-key";
+import { InvalidParamError } from "../../../../src/presentation/errors/invalid-param-error";
 import {
   badRequest,
   serverError,
@@ -126,6 +127,17 @@ describe("SaveKey Controller", () => {
     expect(request).toStrictEqual(serverError());
   });
 
+  test("should return badRequest if accountId is not valid", async () => {
+    const { sut, decodeJwt } = makeSut();
+    jest.spyOn(decodeJwt, "decode").mockReturnValueOnce({});
+
+    const request = await sut.handle(fakeHttpRequest);
+
+    expect(request).toStrictEqual(
+      badRequest(new InvalidParamError("accessToken"))
+    );
+  });
+
   test("should return serverError if saveKey throws", async () => {
     const { sut, saveKey } = makeSut();
     jest.spyOn(saveKey, "save").mockRejectedValueOnce(new Error());
@@ -139,6 +151,8 @@ describe("SaveKey Controller", () => {
     const decodeSpy = jest.spyOn(saveKey, "save");
     await sut.handle(fakeHttpRequest);
 
-    expect(decodeSpy).toBeCalledWith({ userId: "fake-account-id" });
+    expect(decodeSpy).toBeCalledWith({
+      userId: "fake-account-id",
+    });
   });
 });
