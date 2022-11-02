@@ -115,6 +115,17 @@ describe("SaveKey Controller", () => {
     expect(request).toStrictEqual(serverError());
   });
 
+  test("should return serverError if decode throws", async () => {
+    const { sut, decodeJwt } = makeSut();
+    jest.spyOn(decodeJwt, "decode").mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const request = await sut.handle(fakeHttpRequest);
+
+    expect(request).toStrictEqual(serverError());
+  });
+
   test("should return serverError if saveKey throws", async () => {
     const { sut, saveKey } = makeSut();
     jest.spyOn(saveKey, "save").mockRejectedValueOnce(new Error());
