@@ -55,4 +55,13 @@ describe("DbSaveKey", () => {
       userId: "fake-user-id",
     });
   });
+
+  test("should throw if saveKeyRepository throws", async () => {
+    const { sut, saveKeyRepository } = makeSut();
+    jest.spyOn(saveKeyRepository, "save").mockRejectedValue(new Error());
+
+    const promise = sut.save(fakeData);
+
+    await expect(promise).rejects.toThrow(new Error());
+  });
 });

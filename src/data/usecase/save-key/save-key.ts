@@ -10,7 +10,7 @@ export class DbSaveKey implements SaveKey {
 
   public async save(data: SaveKeyInput): Promise<void> {
     const key = this.generateKey.generate();
-    this.saveKeyRepository.save({
+    await this.saveKeyRepository.save({
       key: key,
       userId: data.userId,
     });
