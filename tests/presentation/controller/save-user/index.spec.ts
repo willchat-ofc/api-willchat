@@ -104,6 +104,17 @@ describe("SaveKey Controller", () => {
     expect(decodeSpy).toBeCalledWith(fakeHttpRequest.body.accessToken);
   });
 
+  test("should return serverError if validator throws", async () => {
+    const { sut, validator } = makeSut();
+    jest.spyOn(validator, "validate").mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const request = await sut.handle(fakeHttpRequest);
+
+    expect(request).toStrictEqual(serverError());
+  });
+
   test("should return serverError if saveKey throws", async () => {
     const { sut, saveKey } = makeSut();
     jest.spyOn(saveKey, "save").mockRejectedValueOnce(new Error());
