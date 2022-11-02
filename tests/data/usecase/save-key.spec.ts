@@ -56,6 +56,17 @@ describe("DbSaveKey", () => {
     });
   });
 
+  test("should throw if generateKey throws", async () => {
+    const { sut, generateKey } = makeSut();
+    jest.spyOn(generateKey, "generate").mockImplementation(() => {
+      throw new Error();
+    });
+
+    const promise = sut.save(fakeData);
+
+    await expect(promise).rejects.toThrow(new Error());
+  });
+
   test("should throw if saveKeyRepository throws", async () => {
     const { sut, saveKeyRepository } = makeSut();
     jest.spyOn(saveKeyRepository, "save").mockRejectedValue(new Error());
