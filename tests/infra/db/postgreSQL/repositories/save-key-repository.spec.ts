@@ -42,7 +42,7 @@ describe("SaveKey Repository", () => {
     expect(data).toBeTruthy();
   });
 
-  test("should save the c", async () => {
+  test("should save the chat", async () => {
     const { sut } = makeSut();
 
     await sut.save({
