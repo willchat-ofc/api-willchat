@@ -3,16 +3,19 @@ import type {
   SaveKeyRepository,
   SaveKeyRepositoryInput,
 } from "./../../../../../data/protocols/save-key-repository";
-import postgreHelper from "../../helper/postgre-helper";
 import { KeyEntity } from "../../entities/key-postgresql-entity";
+import { PostgreRepository } from "../../helper/repository";
 
-export class SaveKeyPostgreRepository implements SaveKeyRepository {
+export class SaveKeyPostgreRepository
+  extends PostgreRepository
+  implements SaveKeyRepository
+{
   public async save(data: SaveKeyRepositoryInput): Promise<void> {
-    const chatRepository = await postgreHelper.getRepository(ChatEntity);
+    const chatRepository = this.getRepository(ChatEntity);
     const chat = new ChatEntity();
     await chatRepository.save(chat);
 
-    const keyRepository = await postgreHelper.getRepository(KeyEntity);
+    const keyRepository = this.getRepository(KeyEntity);
     const key = new KeyEntity();
     key.chat = chat;
     key.userId = data.userId;
