@@ -1,17 +1,17 @@
 import { DataSource } from "typeorm";
 import type { DataSourceOptions, ObjectType, Repository } from "typeorm";
-import { KeyEntity } from "../entities/key-postgresql-entity";
-import { MessagesEntity } from "../entities/message-postgresql-entity";
-import { ChatEntity } from "../entities/chat-postgresql-entity";
+import { KeyEntity } from "../postgreSQL/entities/key-postgresql-entity";
+import { MessagesEntity } from "../postgreSQL/entities/message-postgresql-entity";
+import { ChatEntity } from "../postgreSQL/entities/chat-postgresql-entity";
 
-export class PostgreHelper {
-  private static instance?: PostgreHelper;
+export class TypeormHelper {
+  private static instance?: TypeormHelper;
 
   private connection!: DataSource;
 
-  public static getInstance(): PostgreHelper {
-    if (!PostgreHelper.instance) PostgreHelper.instance = new PostgreHelper();
-    return PostgreHelper.instance;
+  public static getInstance(): TypeormHelper {
+    if (!TypeormHelper.instance) TypeormHelper.instance = new TypeormHelper();
+    return TypeormHelper.instance;
   }
 
   public async startPostgre(config: DataSourceOptions) {

@@ -4,10 +4,10 @@ import type {
   SaveKeyRepositoryInput,
 } from "./../../../../../data/protocols/save-key-repository";
 import { KeyEntity } from "../../entities/key-postgresql-entity";
-import { PostgreRepository } from "../../helper/repository";
+import { TypeormRepository } from "../../../helper/repository";
 
-export class SaveKeyPostgreRepository
-  extends PostgreRepository
+export class SaveKeyTypeormRepository
+  extends TypeormRepository
   implements SaveKeyRepository
 {
   public async save(data: SaveKeyRepositoryInput): Promise<void> {

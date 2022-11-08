@@ -1,11 +1,11 @@
 import Database from "better-sqlite3";
 import type { DataSourceOptions } from "typeorm";
-import { PostgreHelper } from "../../../../../src/infra/db/postgreSQL/helper/postgre-helper";
+import { TypeormHelper } from "../../../../../src/infra/db/helper/typeorm-helper";
 
-export class TestPostgreHelper {
+export class TestTypeormHelper {
   public constructor() {}
 
-  private connection!: PostgreHelper;
+  private connection!: TypeormHelper;
 
   private testdb!: Database.Database;
 
@@ -18,7 +18,7 @@ export class TestPostgreHelper {
       database: ":memory:",
     } as DataSourceOptions;
 
-    this.connection = PostgreHelper.getInstance();
+    this.connection = TypeormHelper.getInstance();
     await this.connection.startPostgre(config);
   }
 
