@@ -6,7 +6,7 @@ import type {
 import { KeyEntity } from "../../entities/key-postgresql-entity";
 import { TypeormRepository } from "../../../helper/repository";
 
-export class SaveKeyTypeormRepository
+export class SaveKeyPostgreRepository
   extends TypeormRepository
   implements SaveKeyRepository
 {

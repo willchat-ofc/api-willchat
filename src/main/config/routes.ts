@@ -8,9 +8,15 @@ export const setupRoutes = (app: Express) => {
   app.use("/api", router);
 
   fg.sync([
+    "**/src/main/routes/**.router.ts",
     "**/src/main/routes/**-router/**.router.ts",
-    "**/src/main/routes/**/**-router/**.router.ts",
   ]).map(async (file) => {
+    const fileList = file.split("/");
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    const index = fileList.length - 1;
+
+    console.log(`Loading the router ${fileList[index]} ...`);
+
     (await import(`../../../${file}`)).default(router);
   });
 };

@@ -1,4 +1,4 @@
-import { SaveKeyTypeormRepository } from "./../../../../../src/infra/db/postgreSQL/repositories/save-key-repository/index";
+import { SaveKeyPostgreRepository } from "./../../../../../src/infra/db/postgreSQL/repositories/save-key-repository/index";
 import { TestTypeormHelper } from "../mocks/postgre-test-helper";
 import type { Repository } from "typeorm";
 import { KeyEntity } from "../../../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
@@ -10,7 +10,7 @@ describe("SaveKey Repository", () => {
   beforeAll(async () => {
     connection = new TestTypeormHelper();
     await connection.setupTestDB();
-    keyRepository = new SaveKeyTypeormRepository().getRepository(KeyEntity);
+    keyRepository = new SaveKeyPostgreRepository().getRepository(KeyEntity);
   });
 
   afterAll(async () => {
@@ -18,7 +18,7 @@ describe("SaveKey Repository", () => {
   });
 
   const makeSut = () => {
-    const sut = new SaveKeyTypeormRepository();
+    const sut = new SaveKeyPostgreRepository();
 
     return {
       sut,

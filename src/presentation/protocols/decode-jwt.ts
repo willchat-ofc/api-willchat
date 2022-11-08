@@ -1,3 +1,3 @@
 export interface DecodeJwt {
-  decode: (jwt: string) => any;
+  decode: (token: string) => any;
 }
