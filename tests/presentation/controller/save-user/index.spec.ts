@@ -2,10 +2,13 @@ import type {
   SaveKey,
   SaveKeyInput,
 } from "../../../../src/domain/usecase/save-key";
+import { ChatEntity } from "../../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
+import type { KeyEntity } from "../../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
 import { SaveKeyController } from "../../../../src/presentation/controller/save-key";
 import { InvalidParamError } from "../../../../src/presentation/errors/invalid-param-error";
 import {
   badRequest,
+  ok,
   serverError,
 } from "../../../../src/presentation/helpers/http-helper";
 import type { DecodeJwt } from "../../../../src/presentation/protocols/decode-jwt";
@@ -41,8 +44,13 @@ const makeDecodeJwtStub = (): DecodeJwt => {
 const makeSaveKeyStub = (): SaveKey => {
   class SaveKeyStub implements SaveKey {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public save(data: SaveKeyInput): Promise<void> {
-      return;
+    public async save(data: SaveKeyInput): Promise<KeyEntity | void> {
+      return {
+        id: "fake-key",
+        key: "123",
+        userId: "12345",
+        chat: new ChatEntity(),
+      };
     }
   }
 
@@ -154,5 +162,31 @@ describe("SaveKey Controller", () => {
     expect(decodeSpy).toBeCalledWith({
       userId: "fake-account-id",
     });
+  });
+
+  test("should return badRequest if saveKey returns void", async () => {
+    const { sut, saveKey } = makeSut();
+    const decodeSpy = jest
+      .spyOn(saveKey, "save")
+      .mockRejectedValueOnce(undefined);
+    await sut.handle(fakeHttpRequest);
+
+    expect(decodeSpy).toBeCalledWith({
+      userId: "fake-account-id",
+    });
+  });
+
+  test("should return key if success", async () => {
+    const { sut } = makeSut();
+    const res = await sut.handle(fakeHttpRequest);
+
+    expect(res).toStrictEqual(
+      ok({
+        id: "fake-key",
+        key: "123",
+        userId: "12345",
+        chat: new ChatEntity(),
+      })
+    );
   });
 });
