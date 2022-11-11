@@ -3,7 +3,7 @@ import uid from "uid";
 
 export class UtilGenerateKey implements GenerateKey {
   public generate(): string {
-    const LENGTH = 10;
+    const LENGTH = 30;
     return uid.uid(LENGTH);
   }
 }
