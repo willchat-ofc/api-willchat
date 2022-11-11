@@ -10,17 +10,27 @@ export class SaveKeyPostgreRepository
   extends TypeormRepository
   implements SaveKeyRepository
 {
-  public async save(data: SaveKeyRepositoryInput): Promise<void> {
+  public async save(data: SaveKeyRepositoryInput): Promise<KeyEntity | void> {
     const chatRepository = this.getRepository(ChatEntity);
     const chat = new ChatEntity();
-    await chatRepository.save(chat);
 
     const keyRepository = this.getRepository(KeyEntity);
+    const existsUser = await keyRepository.findOne({
+      where: {
+        userId: data.userId,
+      },
+    });
+
+    if (existsUser) return;
+
     const key = new KeyEntity();
     key.chat = chat;
     key.userId = data.userId;
     key.key = data.key;
 
-    await keyRepository.save(key);
+    await chatRepository.save(chat);
+    const keyEntity = await keyRepository.save(key);
+
+    return keyEntity;
   }
 }

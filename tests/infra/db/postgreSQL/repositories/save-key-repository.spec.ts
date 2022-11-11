@@ -3,6 +3,11 @@ import { TestTypeormHelper } from "../mocks/postgre-test-helper";
 import type { Repository } from "typeorm";
 import { KeyEntity } from "../../../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
 
+const makeFakeRequest = {
+  key: "123",
+  userId: "12345",
+};
+
 describe("SaveKey Repository", () => {
   let connection: TestTypeormHelper;
   let keyRepository: Repository<KeyEntity>;
@@ -11,6 +16,10 @@ describe("SaveKey Repository", () => {
     connection = new TestTypeormHelper();
     await connection.setupTestDB();
     keyRepository = new SaveKeyPostgreRepository().getRepository(KeyEntity);
+  });
+
+  beforeEach(async () => {
+    keyRepository.clear();
   });
 
   afterAll(async () => {
@@ -27,12 +36,7 @@ describe("SaveKey Repository", () => {
 
   test("should save the key", async () => {
     const { sut } = makeSut();
-
-    await sut.save({
-      key: "123",
-      userId: "12345",
-    });
-
+    await sut.save(makeFakeRequest);
     const data = await keyRepository.findOne({
       where: {
         userId: "12345",
@@ -44,12 +48,7 @@ describe("SaveKey Repository", () => {
 
   test("should save the chat", async () => {
     const { sut } = makeSut();
-
-    await sut.save({
-      key: "123",
-      userId: "12345",
-    });
-
+    await sut.save(makeFakeRequest);
     const data = await keyRepository.findOne({
       where: {
         userId: "12345",
@@ -60,5 +59,20 @@ describe("SaveKey Repository", () => {
     });
 
     expect(data.chat).toBeTruthy();
+  });
+
+  test("should return void if user already exists", async () => {
+    const { sut } = makeSut();
+    await sut.save(makeFakeRequest);
+    const res = await sut.save(makeFakeRequest);
+
+    expect(res).not.toBeTruthy();
+  });
+
+  test("should return key if success", async () => {
+    const { sut } = makeSut();
+    const res = await sut.save(makeFakeRequest);
+
+    expect(res).toStrictEqual(expect.objectContaining(makeFakeRequest));
   });
 });
