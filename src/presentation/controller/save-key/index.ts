@@ -5,6 +5,7 @@ import type { Controller } from "../../protocols/controller";
 import type { DecodeJwt } from "../../protocols/decode-jwt";
 import { InvalidParamError } from "../../errors/invalid-param-error";
 import type { SaveKey } from "../../../domain/usecase/save-key";
+import { AlreadyExistsError } from "../../errors/user-already-exists-error";
 
 export class SaveKeyController implements Controller {
   public constructor(
@@ -23,11 +24,13 @@ export class SaveKeyController implements Controller {
       if (!account.accountId)
         return badRequest(new InvalidParamError("accessToken"));
 
-      await this.saveKey.save({
+      const key = await this.saveKey.save({
         userId: account.accountId,
       });
 
-      return ok();
+      if (!key) return badRequest(new AlreadyExistsError());
+
+      return ok(key);
     } catch (err) {
       return serverError();
     }
