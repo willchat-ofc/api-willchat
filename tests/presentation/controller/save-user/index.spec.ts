@@ -12,6 +12,7 @@ import {
   serverError,
 } from "../../../../src/presentation/helpers/http-helper";
 import type { DecodeJwt } from "../../../../src/presentation/protocols/decode-jwt";
+import type { HttpRequest } from "../../../../src/presentation/protocols/http";
 import type { Validation } from "../../../../src/presentation/protocols/validation";
 
 const makeValidatorStub = (): Validation => {
@@ -71,9 +72,9 @@ const makeSut = () => {
   };
 };
 
-const fakeHttpRequest = {
-  body: {
-    accessToken: "fake-accessToken",
+const fakeHttpRequest: HttpRequest = {
+  header: {
+    accesstoken: "fake-accesstoken",
   },
 };
 
@@ -91,7 +92,7 @@ describe("SaveKey Controller", () => {
     const validateSpy = jest.spyOn(validator, "validate");
     await sut.handle(fakeHttpRequest);
 
-    expect(validateSpy).toBeCalledWith(fakeHttpRequest.body);
+    expect(validateSpy).toBeCalledWith(fakeHttpRequest.header);
   });
 
   test("should return serverError if decodeJwt throws", async () => {
@@ -110,7 +111,7 @@ describe("SaveKey Controller", () => {
     const decodeSpy = jest.spyOn(decodeJwt, "decode");
     await sut.handle(fakeHttpRequest);
 
-    expect(decodeSpy).toBeCalledWith(fakeHttpRequest.body.accessToken);
+    expect(decodeSpy).toBeCalledWith(fakeHttpRequest.header.accesstoken);
   });
 
   test("should return serverError if validator throws", async () => {
@@ -142,7 +143,7 @@ describe("SaveKey Controller", () => {
     const request = await sut.handle(fakeHttpRequest);
 
     expect(request).toStrictEqual(
-      badRequest(new InvalidParamError("accessToken"))
+      badRequest(new InvalidParamError("accesstoken"))
     );
   });
 

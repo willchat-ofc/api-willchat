@@ -16,13 +16,13 @@ export class SaveKeyController implements Controller {
 
   public async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const error = this.validator.validate(httpRequest.body);
+      const error = this.validator.validate(httpRequest.header);
       if (error) return badRequest(error);
 
-      const account = this.decodeJwt.decode(httpRequest.body.accessToken);
+      const account = this.decodeJwt.decode(httpRequest.header.accesstoken);
 
       if (!account.accountId)
-        return badRequest(new InvalidParamError("accessToken"));
+        return badRequest(new InvalidParamError("accesstoken"));
 
       const key = await this.saveKey.save({
         userId: account.accountId,
