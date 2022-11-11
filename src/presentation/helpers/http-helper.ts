@@ -12,7 +12,7 @@ export const serverError = (): HttpResponse => ({
   body: { error: new ServerError().message },
 });
 
-export const ok = (data: any): HttpResponse => ({
+export const ok = (data?: any): HttpResponse => ({
   statusCode: 200,
   body: data,
 });

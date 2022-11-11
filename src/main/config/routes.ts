@@ -5,7 +5,7 @@ import fg from "fast-glob";
 export const setupRoutes = (app: Express) => {
   const router = Router();
 
-  app.use("/api", router);
+  app.use(router);
 
   fg.sync([
     "**/src/main/routes/**.router.ts",

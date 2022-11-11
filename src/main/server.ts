@@ -11,7 +11,7 @@ const bootstrap = async () => {
     });
 
   app.listen(env.port, () => {
-    console.log("The server has started");
+    console.log(`The server has started as 'http://localhost:${env.port}'`);
   });
 };
 

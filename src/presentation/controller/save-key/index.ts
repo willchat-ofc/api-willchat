@@ -1,4 +1,4 @@
-import { badRequest, serverError } from "../../helpers/http-helper";
+import { badRequest, ok, serverError } from "../../helpers/http-helper";
 import type { Validation } from "../../protocols/validation";
 import type { HttpRequest, HttpResponse } from "../../protocols/http";
 import type { Controller } from "../../protocols/controller";
@@ -18,13 +18,17 @@ export class SaveKeyController implements Controller {
       const error = this.validator.validate(httpRequest.body);
       if (error) return badRequest(error);
 
-      const { accountId } = this.decodeJwt.decode(httpRequest.body.accessToken);
-      if (!accountId) return badRequest(new InvalidParamError("accessToken"));
+      const account = this.decodeJwt.decode(httpRequest.body.accessToken);
+
+      if (!account.accountId)
+        return badRequest(new InvalidParamError("accessToken"));
 
       await this.saveKey.save({
-        userId: accountId,
+        userId: account.accountId,
       });
-    } catch {
+
+      return ok();
+    } catch (err) {
       return serverError();
     }
   }
