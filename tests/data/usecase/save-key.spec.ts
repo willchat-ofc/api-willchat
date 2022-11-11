@@ -4,12 +4,19 @@ import type {
 } from "./../../../src/data/protocols/save-key-repository";
 import { DbSaveKey } from "../../../src/data/usecase/save-key/save-key";
 import type { GenerateKey } from "../../../src/data/protocols/generate-key";
+import type { KeyEntity } from "../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
+import { ChatEntity } from "../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
 
 const makeSaveKeyRepositoryStub = (): SaveKeyRepository => {
   class SaveKeyRepositoryStub implements SaveKeyRepository {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public async save(data: SaveKeyRepositoryInput): Promise<void> {
-      return;
+    public async save(data: SaveKeyRepositoryInput): Promise<KeyEntity | void> {
+      return {
+        id: "fake-key",
+        key: "123",
+        userId: "12345",
+        chat: new ChatEntity(),
+      };
     }
   }
 
@@ -74,5 +81,17 @@ describe("DbSaveKey", () => {
     const promise = sut.save(fakeData);
 
     await expect(promise).rejects.toThrow(new Error());
+  });
+
+  test("should return key if success", async () => {
+    const { sut } = makeSut();
+    const res = await sut.save(fakeData);
+
+    expect(res).toStrictEqual({
+      id: "fake-key",
+      key: "123",
+      userId: "12345",
+      chat: new ChatEntity(),
+    });
   });
 });
