@@ -144,4 +144,13 @@ describe("GetKey Controller", () => {
       userId: "fake-account-id",
     });
   });
+
+  test("should return serverError if getKey throws", async () => {
+    const { sut, getKey } = makeSut();
+    jest.spyOn(getKey, "get").mockRejectedValueOnce(new Error());
+
+    const promise = await sut.handle(fakeHttpRequest);
+
+    expect(promise).toStrictEqual(serverError());
+  });
 });
