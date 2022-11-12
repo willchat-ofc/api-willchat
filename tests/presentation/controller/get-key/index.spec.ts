@@ -7,6 +7,7 @@ import type { KeyEntity } from "../../../../src/infra/db/postgreSQL/entities/key
 import { GetKeyController } from "../../../../src/presentation/controller/get-key";
 import {
   badRequest,
+  ok,
   serverError,
 } from "../../../../src/presentation/helpers/http-helper";
 import type { DecodeJwt } from "../../../../src/presentation/protocols/decode-jwt";
@@ -152,5 +153,19 @@ describe("GetKey Controller", () => {
     const promise = await sut.handle(fakeHttpRequest);
 
     expect(promise).toStrictEqual(serverError());
+  });
+
+  test("should return key if success", async () => {
+    const { sut } = makeSut();
+    const res = await sut.handle(fakeHttpRequest);
+
+    expect(res).toStrictEqual(
+      ok({
+        id: "fake-key",
+        key: "123",
+        userId: "fake-user-id",
+        chat: new ChatEntity(),
+      })
+    );
   });
 });
