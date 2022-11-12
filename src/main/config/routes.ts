@@ -14,8 +14,7 @@ export const setupRoutes = (app: Express) => {
     const fileList = file.split("/");
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     const index = fileList.length - 1;
-
-    console.log(`Loading the router ${fileList[index]} ...`);
+    console.log(`Loading the file router ${fileList[index]} ...`);
 
     (await import(`../../../${file}`)).default(router);
   });
