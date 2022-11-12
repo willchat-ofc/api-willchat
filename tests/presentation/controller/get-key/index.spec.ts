@@ -1,3 +1,9 @@
+import type {
+  GetKey,
+  GetKeyInput,
+} from "../../../../src/domain/usecase/get-key";
+import { ChatEntity } from "../../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
+import type { KeyEntity } from "../../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
 import { GetKeyController } from "../../../../src/presentation/controller/get-key";
 import {
   badRequest,
@@ -34,15 +40,33 @@ const makeDecodeJwtStub = (): DecodeJwt => {
   return new DecodeJwtStub();
 };
 
+const makeGetKeyStub = () => {
+  class GetKeyStub implements GetKey {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public async get(data: GetKeyInput): Promise<KeyEntity> {
+      return {
+        id: "fake-key",
+        key: "123",
+        userId: "fake-user-id",
+        chat: new ChatEntity(),
+      };
+    }
+  }
+
+  return new GetKeyStub();
+};
+
 const makeSut = () => {
   const decodeJwt = makeDecodeJwtStub();
   const validator = makeValidatorStub();
-  const sut = new GetKeyController(validator, decodeJwt);
+  const getKey = makeGetKeyStub();
+  const sut = new GetKeyController(validator, decodeJwt, getKey);
 
   return {
     sut,
     validator,
     decodeJwt,
+    getKey,
   };
 };
 
@@ -108,5 +132,16 @@ describe("GetKey Controller", () => {
     const request = await sut.handle(fakeHttpRequest);
 
     expect(request).toStrictEqual(serverError());
+  });
+
+  test("should call getKey with correctly value", async () => {
+    const { sut, getKey } = makeSut();
+    const getSpy = jest.spyOn(getKey, "get");
+
+    await sut.handle(fakeHttpRequest);
+
+    expect(getSpy).toBeCalledWith({
+      userId: "fake-account-id",
+    });
   });
 });
