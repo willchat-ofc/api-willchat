@@ -5,6 +5,7 @@ import type {
 import { ChatEntity } from "../../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
 import type { KeyEntity } from "../../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
 import { GetKeyController } from "../../../../src/presentation/controller/get-key";
+import { UserNotExistsError } from "../../../../src/presentation/errors/user-not-exists-error";
 import {
   badRequest,
   ok,
@@ -153,6 +154,15 @@ describe("GetKey Controller", () => {
     const promise = await sut.handle(fakeHttpRequest);
 
     expect(promise).toStrictEqual(serverError());
+  });
+
+  test("should return badRequest if getKey return null", async () => {
+    const { sut, getKey } = makeSut();
+    jest.spyOn(getKey, "get").mockResolvedValueOnce(null);
+
+    const promise = await sut.handle(fakeHttpRequest);
+
+    expect(promise).toStrictEqual(badRequest(new UserNotExistsError()));
   });
 
   test("should return key if success", async () => {
