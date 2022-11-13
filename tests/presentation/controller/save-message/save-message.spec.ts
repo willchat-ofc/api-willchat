@@ -7,6 +7,7 @@ import type { MessagesEntity } from "../../../../src/infra/db/postgreSQL/entitie
 import { SaveMessageController } from "../../../../src/presentation/controller/save-message/save-message";
 import {
   badRequest,
+  ok,
   serverError,
 } from "../../../../src/presentation/helpers/http-helper";
 import type { HttpRequest } from "../../../../src/presentation/protocols/http";
@@ -112,5 +113,20 @@ describe("SaveMessage Controller", () => {
       userName: "Willian",
       userId: "fake-user-id",
     });
+  });
+
+  test("should return message if success", async () => {
+    const { sut } = makeSut();
+    const res = await sut.handle(fakeHttpRequest);
+
+    expect(res).toStrictEqual(
+      ok({
+        id: "fake-key",
+        userId: "fake-user-id",
+        chat: new ChatEntity(),
+        message: "Hello world!",
+        userName: "Willian",
+      })
+    );
   });
 });
