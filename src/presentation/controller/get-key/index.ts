@@ -1,5 +1,4 @@
 import type { GetKey } from "../../../domain/usecase/get-key";
-import { InvalidParamError } from "../../errors/invalid-param-error";
 import { UserNotExistsError } from "../../errors/user-not-exists-error";
 import { badRequest, ok, serverError } from "../../helpers/http-helper";
 import type { Controller } from "../../protocols/controller";
@@ -19,12 +18,8 @@ export class GetKeyController implements Controller {
       const error = this.validator.validate(httpRequest.header);
       if (error) return badRequest(error);
 
-      const account = this.decodeJwt.decode(httpRequest.header.accesstoken);
-      if (!account.accountId)
-        return badRequest(new InvalidParamError("accesstoken"));
-
       const key = await this.getKey.get({
-        userId: account.accountId as string,
+        userId: httpRequest.body.accountId,
       });
 
       if (!key) return badRequest(new UserNotExistsError());

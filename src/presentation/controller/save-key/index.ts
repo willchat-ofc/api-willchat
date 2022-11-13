@@ -3,7 +3,6 @@ import type { Validation } from "../../protocols/validation";
 import type { HttpRequest, HttpResponse } from "../../protocols/http";
 import type { Controller } from "../../protocols/controller";
 import type { DecodeJwt } from "../../protocols/decode-jwt";
-import { InvalidParamError } from "../../errors/invalid-param-error";
 import type { SaveKey } from "../../../domain/usecase/save-key";
 import { AlreadyExistsError } from "../../errors/user-already-exists-error";
 
@@ -19,13 +18,8 @@ export class SaveKeyController implements Controller {
       const error = this.validator.validate(httpRequest.header);
       if (error) return badRequest(error);
 
-      const account = this.decodeJwt.decode(httpRequest.header.accesstoken);
-
-      if (!account.accountId)
-        return badRequest(new InvalidParamError("accesstoken"));
-
       const key = await this.saveKey.save({
-        userId: account.accountId,
+        userId: httpRequest.body.accountId,
       });
 
       if (!key) return badRequest(new AlreadyExistsError());

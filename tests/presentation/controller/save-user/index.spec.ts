@@ -5,7 +5,6 @@ import type {
 import { ChatEntity } from "../../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
 import type { KeyEntity } from "../../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
 import { SaveKeyController } from "../../../../src/presentation/controller/save-key";
-import { InvalidParamError } from "../../../../src/presentation/errors/invalid-param-error";
 import {
   badRequest,
   ok,
@@ -76,6 +75,9 @@ const fakeHttpRequest: HttpRequest = {
   header: {
     accesstoken: "fake-accesstoken",
   },
+  body: {
+    accountId: "fake-account-id",
+  },
 };
 
 describe("SaveKey Controller", () => {
@@ -95,25 +97,6 @@ describe("SaveKey Controller", () => {
     expect(validateSpy).toBeCalledWith(fakeHttpRequest.header);
   });
 
-  test("should return serverError if decodeJwt throws", async () => {
-    const { sut, decodeJwt } = makeSut();
-    jest.spyOn(decodeJwt, "decode").mockImplementationOnce(() => {
-      throw new Error();
-    });
-
-    const request = await sut.handle(fakeHttpRequest);
-
-    expect(request).toStrictEqual(serverError());
-  });
-
-  test("should call decode with correct values", async () => {
-    const { sut, decodeJwt } = makeSut();
-    const decodeSpy = jest.spyOn(decodeJwt, "decode");
-    await sut.handle(fakeHttpRequest);
-
-    expect(decodeSpy).toBeCalledWith(fakeHttpRequest.header.accesstoken);
-  });
-
   test("should return serverError if validator throws", async () => {
     const { sut, validator } = makeSut();
     jest.spyOn(validator, "validate").mockImplementationOnce(() => {
@@ -123,28 +106,6 @@ describe("SaveKey Controller", () => {
     const request = await sut.handle(fakeHttpRequest);
 
     expect(request).toStrictEqual(serverError());
-  });
-
-  test("should return serverError if decode throws", async () => {
-    const { sut, decodeJwt } = makeSut();
-    jest.spyOn(decodeJwt, "decode").mockImplementationOnce(() => {
-      throw new Error();
-    });
-
-    const request = await sut.handle(fakeHttpRequest);
-
-    expect(request).toStrictEqual(serverError());
-  });
-
-  test("should return badRequest if accountId is not valid", async () => {
-    const { sut, decodeJwt } = makeSut();
-    jest.spyOn(decodeJwt, "decode").mockReturnValueOnce({});
-
-    const request = await sut.handle(fakeHttpRequest);
-
-    expect(request).toStrictEqual(
-      badRequest(new InvalidParamError("accesstoken"))
-    );
   });
 
   test("should return serverError if saveKey throws", async () => {

@@ -15,6 +15,8 @@ export const verifyAccess = async (
     if (!accessToken) return res.status(statusCode).json(body);
     jwt.verify(accessToken, env.secret);
 
+    const info = jwt.decode(accessToken) as any;
+    req.accountId = info.accountId;
     next();
   } catch {
     return res.status(statusCode).json(body);
