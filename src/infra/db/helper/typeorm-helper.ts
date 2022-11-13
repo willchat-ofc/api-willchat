@@ -30,8 +30,6 @@ export class TypeormHelper {
   }
 
   public async stopPostgre() {
-    console.log("run destroy");
-
     await this.connection.destroy();
     this.connection = null;
   }

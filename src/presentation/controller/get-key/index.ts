@@ -1,5 +1,6 @@
 import type { GetKey } from "../../../domain/usecase/get-key";
 import { InvalidParamError } from "../../errors/invalid-param-error";
+import { UserNotExistsError } from "../../errors/user-not-exists-error";
 import { badRequest, ok, serverError } from "../../helpers/http-helper";
 import type { Controller } from "../../protocols/controller";
 import type { DecodeJwt } from "../../protocols/decode-jwt";
@@ -25,6 +26,8 @@ export class GetKeyController implements Controller {
       const key = await this.getKey.get({
         userId: account.accountId as string,
       });
+
+      if (!key) return badRequest(new UserNotExistsError());
 
       return ok(key);
     } catch (err) {
