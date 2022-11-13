@@ -10,7 +10,6 @@ import {
   ok,
   serverError,
 } from "../../../../src/presentation/helpers/http-helper";
-import type { DecodeJwt } from "../../../../src/presentation/protocols/decode-jwt";
 import type { HttpRequest } from "../../../../src/presentation/protocols/http";
 import type { Validation } from "../../../../src/presentation/protocols/validation";
 
@@ -23,22 +22,6 @@ const makeValidatorStub = (): Validation => {
   }
 
   return new ValidatorStub();
-};
-
-const makeDecodeJwtStub = (): DecodeJwt => {
-  class DecodeJwtStub implements DecodeJwt {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public decode(jwt: string) {
-      return {
-        accountId: "fake-account-id",
-        sub: "client",
-        iat: 1667171037,
-        exp: 1667171337,
-      };
-    }
-  }
-
-  return new DecodeJwtStub();
 };
 
 const makeSaveKeyStub = (): SaveKey => {
@@ -58,15 +41,13 @@ const makeSaveKeyStub = (): SaveKey => {
 };
 
 const makeSut = () => {
-  const decodeJwt = makeDecodeJwtStub();
   const validator = makeValidatorStub();
   const saveKey = makeSaveKeyStub();
-  const sut = new SaveKeyController(validator, decodeJwt, saveKey);
+  const sut = new SaveKeyController(validator, saveKey);
 
   return {
     sut,
     validator,
-    decodeJwt,
     saveKey,
   };
 };

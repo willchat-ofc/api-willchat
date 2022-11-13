@@ -2,14 +2,12 @@ import type { GetKey } from "../../../domain/usecase/get-key";
 import { UserNotExistsError } from "../../errors/user-not-exists-error";
 import { badRequest, ok, serverError } from "../../helpers/http-helper";
 import type { Controller } from "../../protocols/controller";
-import type { DecodeJwt } from "../../protocols/decode-jwt";
 import type { HttpRequest, HttpResponse } from "../../protocols/http";
 import type { Validation } from "../../protocols/validation";
 
 export class GetKeyController implements Controller {
   public constructor(
     private readonly validator: Validation,
-    private readonly decodeJwt: DecodeJwt,
     private readonly getKey: GetKey
   ) {}
 

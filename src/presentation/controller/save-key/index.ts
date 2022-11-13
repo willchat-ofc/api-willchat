@@ -2,14 +2,12 @@ import { badRequest, ok, serverError } from "../../helpers/http-helper";
 import type { Validation } from "../../protocols/validation";
 import type { HttpRequest, HttpResponse } from "../../protocols/http";
 import type { Controller } from "../../protocols/controller";
-import type { DecodeJwt } from "../../protocols/decode-jwt";
 import type { SaveKey } from "../../../domain/usecase/save-key";
 import { AlreadyExistsError } from "../../errors/user-already-exists-error";
 
 export class SaveKeyController implements Controller {
   public constructor(
     private readonly validator: Validation,
-    private readonly decodeJwt: DecodeJwt,
     private readonly saveKey: SaveKey
   ) {}
 
