@@ -43,7 +43,16 @@ describe("GetKey Repository", () => {
     await connection.teardownTestDB();
   });
 
-  test("should return the key", async () => {
+  test("should return null if findOne return null", async () => {
+    const { sut } = makeSut();
+    const key = await sut.get({
+      userId: "invalid-user-id",
+    });
+
+    expect(key).not.toBeTruthy();
+  });
+
+  test("should return the key if success", async () => {
     const { sut } = makeSut();
     const key = await sut.get(makeFakeRequest);
 
