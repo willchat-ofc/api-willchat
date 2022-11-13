@@ -1,5 +1,5 @@
 import type { SaveMessage } from "../../../domain/usecase/save-message";
-import { badRequest, serverError } from "../../helpers/http-helper";
+import { badRequest, ok, serverError } from "../../helpers/http-helper";
 import type { Controller } from "../../protocols/controller";
 import type { HttpRequest, HttpResponse } from "../../protocols/http";
 import type { Validation } from "../../protocols/validation";
@@ -16,12 +16,14 @@ export class SaveMessageController implements Controller {
       const error = this.validator.validate(body);
       if (error) return badRequest(error);
 
-      await this.saveMessage.save({
+      const message = await this.saveMessage.save({
         key: body.key,
         message: body.message,
         userName: body.userName,
         userId: body.userId,
       });
+
+      return ok(message);
     } catch {
       return serverError();
     }
