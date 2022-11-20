@@ -5,6 +5,7 @@ import type {
 import { ChatEntity } from "../../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
 import type { MessagesEntity } from "../../../../src/infra/db/postgreSQL/entities/message-postgresql-entity";
 import { SaveMessageController } from "../../../../src/presentation/controller/save-message/save-message";
+import { InvalidParamError } from "../../../../src/presentation/errors/invalid-param-error";
 import {
   badRequest,
   ok,
@@ -113,6 +114,14 @@ describe("SaveMessage Controller", () => {
       userName: "Willian",
       userId: "fake-user-id",
     });
+  });
+
+  test("should return badRequest if saveMessage returns null", async () => {
+    const { sut, saveMessage } = makeSut();
+    jest.spyOn(saveMessage, "save").mockResolvedValueOnce(null);
+    const res = await sut.handle(fakeHttpRequest);
+
+    expect(res).toStrictEqual(badRequest(new InvalidParamError("key")));
   });
 
   test("should return message if success", async () => {
