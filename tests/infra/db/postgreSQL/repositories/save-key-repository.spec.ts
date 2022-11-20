@@ -19,7 +19,7 @@ describe("SaveKey Repository", () => {
   });
 
   beforeEach(async () => {
-    keyRepository.clear();
+    await keyRepository.clear();
   });
 
   afterAll(async () => {
