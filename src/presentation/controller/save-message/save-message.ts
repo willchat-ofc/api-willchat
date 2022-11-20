@@ -1,4 +1,5 @@
 import type { SaveMessage } from "../../../domain/usecase/save-message";
+import { InvalidParamError } from "../../errors/invalid-param-error";
 import { badRequest, ok, serverError } from "../../helpers/http-helper";
 import type { Controller } from "../../protocols/controller";
 import type { HttpRequest, HttpResponse } from "../../protocols/http";
@@ -22,6 +23,8 @@ export class SaveMessageController implements Controller {
         userName: body.userName,
         userId: body.userId,
       });
+
+      if (!message) return badRequest(new InvalidParamError("key"));
 
       return ok(message);
     } catch {
