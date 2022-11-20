@@ -4,7 +4,7 @@ import { ChatEntity } from "./chat-postgresql-entity";
 @Entity({ name: "messages" })
 export class MessagesEntity {
   @PrimaryGeneratedColumn("uuid")
-  public id!: string;
+  public id?: string;
 
   @Column()
   public message!: string;
