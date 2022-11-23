@@ -4,7 +4,7 @@ import type {
 } from "../../../../src/domain/usecase/save-message";
 import { ChatEntity } from "../../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
 import type { MessagesEntity } from "../../../../src/infra/db/postgreSQL/entities/message-postgresql-entity";
-import { SaveMessageController } from "../../../../src/presentation/controller/save-message/save-message";
+import { SaveMessageController } from "../../../../src/presentation/controller/save-message";
 import { InvalidParamError } from "../../../../src/presentation/errors/invalid-param-error";
 import {
   badRequest,

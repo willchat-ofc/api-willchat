@@ -4,7 +4,7 @@ import type {
 } from "../../../../src/domain/usecase/save-key";
 import { ChatEntity } from "../../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
 import type { KeyEntity } from "../../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
-import { SaveKeyController } from "../../../../src/presentation/controller/save-key/save-key";
+import { SaveKeyController } from "../../../../src/presentation/controller/save-key";
 import {
   badRequest,
   ok,
