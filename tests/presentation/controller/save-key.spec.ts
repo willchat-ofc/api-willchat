@@ -1,17 +1,17 @@
 import type {
   SaveKey,
   SaveKeyInput,
-} from "../../../../src/domain/usecase/save-key";
-import { ChatEntity } from "../../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
-import type { KeyEntity } from "../../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
-import { SaveKeyController } from "../../../../src/presentation/controller/save-key";
+} from "../../../src/domain/usecase/save-key";
+import { ChatEntity } from "../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
+import type { KeyEntity } from "../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
+import { SaveKeyController } from "../../../src/presentation/controller/save-key";
 import {
   badRequest,
   ok,
   serverError,
-} from "../../../../src/presentation/helpers/http-helper";
-import type { HttpRequest } from "../../../../src/presentation/protocols/http";
-import type { Validation } from "../../../../src/presentation/protocols/validation";
+} from "../../../src/presentation/helpers/http-helper";
+import type { HttpRequest } from "../../../src/presentation/protocols/http";
+import type { Validation } from "../../../src/presentation/protocols/validation";
 
 const makeValidatorStub = (): Validation => {
   class ValidatorStub implements Validation {

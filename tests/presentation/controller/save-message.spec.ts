@@ -1,18 +1,18 @@
 import type {
   SaveMessage,
   SaveMessageInput,
-} from "../../../../src/domain/usecase/save-message";
-import { ChatEntity } from "../../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
-import type { MessagesEntity } from "../../../../src/infra/db/postgreSQL/entities/message-postgresql-entity";
-import { SaveMessageController } from "../../../../src/presentation/controller/save-message";
-import { InvalidParamError } from "../../../../src/presentation/errors/invalid-param-error";
+} from "../../../src/domain/usecase/save-message";
+import { ChatEntity } from "../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
+import type { MessagesEntity } from "../../../src/infra/db/postgreSQL/entities/message-postgresql-entity";
+import { SaveMessageController } from "../../../src/presentation/controller/save-message";
+import { InvalidParamError } from "../../../src/presentation/errors/invalid-param-error";
 import {
   badRequest,
   ok,
   serverError,
-} from "../../../../src/presentation/helpers/http-helper";
-import type { HttpRequest } from "../../../../src/presentation/protocols/http";
-import type { Validation } from "../../../../src/presentation/protocols/validation";
+} from "../../../src/presentation/helpers/http-helper";
+import type { HttpRequest } from "../../../src/presentation/protocols/http";
+import type { Validation } from "../../../src/presentation/protocols/validation";
 
 const makeValidatorStub = (): Validation => {
   class ValidatorStub implements Validation {
