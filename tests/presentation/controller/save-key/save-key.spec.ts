@@ -1,11 +1,10 @@
 import type {
-  GetKey,
-  GetKeyInput,
-} from "../../../../src/domain/usecase/get-key";
+  SaveKey,
+  SaveKeyInput,
+} from "../../../../src/domain/usecase/save-key";
 import { ChatEntity } from "../../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
 import type { KeyEntity } from "../../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
-import { GetKeyController } from "../../../../src/presentation/controller/get-key";
-import { UserNotExistsError } from "../../../../src/presentation/errors/user-not-exists-error";
+import { SaveKeyController } from "../../../../src/presentation/controller/save-key/save-key";
 import {
   badRequest,
   ok,
@@ -25,31 +24,31 @@ const makeValidatorStub = (): Validation => {
   return new ValidatorStub();
 };
 
-const makeGetKeyStub = () => {
-  class GetKeyStub implements GetKey {
+const makeSaveKeyStub = (): SaveKey => {
+  class SaveKeyStub implements SaveKey {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public async get(data: GetKeyInput): Promise<KeyEntity> {
+    public async save(data: SaveKeyInput): Promise<KeyEntity | void> {
       return {
         id: "fake-key",
         key: "123",
-        userId: "fake-user-id",
+        userId: "12345",
         chat: new ChatEntity(),
       };
     }
   }
 
-  return new GetKeyStub();
+  return new SaveKeyStub();
 };
 
 const makeSut = () => {
   const validator = makeValidatorStub();
-  const getKey = makeGetKeyStub();
-  const sut = new GetKeyController(validator, getKey);
+  const saveKey = makeSaveKeyStub();
+  const sut = new SaveKeyController(validator, saveKey);
 
   return {
     sut,
     validator,
-    getKey,
+    saveKey,
   };
 };
 
@@ -62,7 +61,7 @@ const fakeHttpRequest: HttpRequest = {
   },
 };
 
-describe("GetKey Controller", () => {
+describe("SaveKey Controller", () => {
   test("should return an Error if validator returns an Error", async () => {
     const { sut, validator } = makeSut();
     jest.spyOn(validator, "validate").mockReturnValue(new Error());
@@ -90,33 +89,34 @@ describe("GetKey Controller", () => {
     expect(request).toStrictEqual(serverError());
   });
 
-  test("should call getKey with correctly value", async () => {
-    const { sut, getKey } = makeSut();
-    const getSpy = jest.spyOn(getKey, "get");
+  test("should return serverError if saveKey throws", async () => {
+    const { sut, saveKey } = makeSut();
+    jest.spyOn(saveKey, "save").mockRejectedValueOnce(new Error());
+    const request = await sut.handle(fakeHttpRequest);
 
+    expect(request).toStrictEqual(serverError());
+  });
+
+  test("should call saveKey with correct values", async () => {
+    const { sut, saveKey } = makeSut();
+    const decodeSpy = jest.spyOn(saveKey, "save");
     await sut.handle(fakeHttpRequest);
 
-    expect(getSpy).toBeCalledWith({
+    expect(decodeSpy).toBeCalledWith({
       userId: "fake-account-id",
     });
   });
 
-  test("should return serverError if getKey throws", async () => {
-    const { sut, getKey } = makeSut();
-    jest.spyOn(getKey, "get").mockRejectedValueOnce(new Error());
+  test("should return badRequest if saveKey returns void", async () => {
+    const { sut, saveKey } = makeSut();
+    const decodeSpy = jest
+      .spyOn(saveKey, "save")
+      .mockRejectedValueOnce(undefined);
+    await sut.handle(fakeHttpRequest);
 
-    const promise = await sut.handle(fakeHttpRequest);
-
-    expect(promise).toStrictEqual(serverError());
-  });
-
-  test("should return badRequest if getKey return null", async () => {
-    const { sut, getKey } = makeSut();
-    jest.spyOn(getKey, "get").mockResolvedValueOnce(null);
-
-    const promise = await sut.handle(fakeHttpRequest);
-
-    expect(promise).toStrictEqual(badRequest(new UserNotExistsError()));
+    expect(decodeSpy).toBeCalledWith({
+      userId: "fake-account-id",
+    });
   });
 
   test("should return key if success", async () => {
@@ -127,7 +127,7 @@ describe("GetKey Controller", () => {
       ok({
         id: "fake-key",
         key: "123",
-        userId: "fake-user-id",
+        userId: "12345",
         chat: new ChatEntity(),
       })
     );
