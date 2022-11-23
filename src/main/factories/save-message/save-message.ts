@@ -3,7 +3,7 @@ import { SaveMessagePostgreRepository } from "../../../infra/db/postgreSQL/repos
 import { SaveMessageController } from "../../../presentation/controller/save-message/save-message";
 import { makeSaveMessageValidation } from "./save-message-validations";
 
-export const makeSaveMessage = () => {
+export const makeSaveMessageController = () => {
   const saveMessageRepository = new SaveMessagePostgreRepository();
   const dbSaveMessage = new DbSaveMessage(saveMessageRepository);
 

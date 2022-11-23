@@ -58,8 +58,9 @@ describe("SaveMessage Router", () => {
     expect(response.statusCode).toBe(200);
     expect(response.body).toStrictEqual(
       expect.objectContaining({
-        userId: "fake-account-id",
-        key: "fake-key",
+        message: "Hello world!",
+        userId: "fake-user-id",
+        userName: "Willian",
       })
     );
   });
