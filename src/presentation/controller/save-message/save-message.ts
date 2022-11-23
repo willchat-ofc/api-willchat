@@ -13,15 +13,14 @@ export class SaveMessageController implements Controller {
 
   public async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { body } = httpRequest;
-      const error = this.validator.validate(body);
+      const error = this.validator.validate(httpRequest.body);
       if (error) return badRequest(error);
 
       const message = await this.saveMessage.save({
-        key: body.key,
-        message: body.message,
-        userName: body.userName,
-        userId: body.userId,
+        key: httpRequest.body.key,
+        message: httpRequest.body.message,
+        userName: httpRequest.body.userName,
+        userId: httpRequest.body.userId,
       });
 
       if (!message) return badRequest(new InvalidParamError("key"));
