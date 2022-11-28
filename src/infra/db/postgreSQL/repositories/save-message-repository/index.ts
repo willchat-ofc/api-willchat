@@ -12,7 +12,8 @@ export class SaveMessagePostgreRepository
 {
   public async save(data: SaveMessageRepositoryInput): Promise<MessagesEntity> {
     const key = await this.findKey(data.key);
-    if (!key) return;
+
+    if (!key || key.userId !== data.accountId) return;
 
     return this.saveMessage({
       chat: key.chat,

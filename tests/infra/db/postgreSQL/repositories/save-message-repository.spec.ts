@@ -19,6 +19,7 @@ const makeFakeData: SaveMessageInput = {
   message: "fake-message",
   userId: "fake-user-id",
   userName: "fake-user-name",
+  accountId: "fake-account-id",
 };
 
 describe("SaveMessage Repository", () => {
@@ -34,7 +35,7 @@ describe("SaveMessage Repository", () => {
     const fakeChat = new ChatEntity();
     const fakeKey = new KeyEntity();
     fakeKey.chat = fakeChat;
-    fakeKey.userId = "fake-user-id";
+    fakeKey.userId = "fake-account-id";
     fakeKey.key = "fake-key";
 
     const postgreRepository = new SaveMessagePostgreRepository();
@@ -60,6 +61,16 @@ describe("SaveMessage Repository", () => {
     });
 
     expect(message).toBeTruthy();
+  });
+
+  test("ensure return null if accountId is not found", async () => {
+    const { sut } = makeSut();
+    const res = await sut.save({
+      ...makeFakeData,
+      accountId: "invalid-account-id",
+    });
+
+    expect(res).not.toBeTruthy();
   });
 
   test("ensure return null if key is not found", async () => {

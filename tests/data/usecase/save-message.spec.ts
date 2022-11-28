@@ -41,6 +41,7 @@ const makeFakeRequest: SaveMessageInput = {
   message: "Hello world!",
   userName: "Willian",
   key: "fake-key",
+  accountId: "fake-account-id",
 };
 
 describe("DbSaveMessage", () => {
@@ -50,12 +51,7 @@ describe("DbSaveMessage", () => {
 
     await sut.save(makeFakeRequest);
 
-    expect(saveSpy).toBeCalledWith({
-      userId: "fake-user-id",
-      message: "Hello world!",
-      userName: "Willian",
-      key: "fake-key",
-    });
+    expect(saveSpy).toBeCalledWith(makeFakeRequest);
   });
 
   test("should return message if success", async () => {

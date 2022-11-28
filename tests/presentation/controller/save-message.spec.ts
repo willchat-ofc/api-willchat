@@ -61,6 +61,7 @@ const fakeHttpRequest: HttpRequest = {
     message: "Hello world!",
     userName: "Willian",
     userId: "fake-user-id",
+    accountId: "fake-account-id",
   },
 };
 
@@ -108,12 +109,7 @@ describe("SaveMessage Controller", () => {
     const validateSpy = jest.spyOn(saveMessage, "save");
     await sut.handle(fakeHttpRequest);
 
-    expect(validateSpy).toBeCalledWith({
-      key: "fake-key",
-      message: "Hello world!",
-      userName: "Willian",
-      userId: "fake-user-id",
-    });
+    expect(validateSpy).toBeCalledWith(fakeHttpRequest.body);
   });
 
   test("should return badRequest if saveMessage returns null", async () => {
