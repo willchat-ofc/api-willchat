@@ -8,6 +8,9 @@ export const verifyAccess = async (
   res: Response,
   next: NextFunction
 ) => {
+  const notNeedAccess = ["/key/message"];
+  if (notNeedAccess.includes(req.path)) return next();
+
   const { body, statusCode } = badRequest(new UnauthorizedError());
 
   try {

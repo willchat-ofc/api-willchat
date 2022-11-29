@@ -1,8 +1,6 @@
 import { TestTypeormHelper } from "./../../infra/db/postgreSQL/mocks/postgre-test-helper";
 import request from "supertest";
 import app from "../../../src/main/config/app";
-import jwt from "jsonwebtoken";
-import { env } from "../../../src/main/config/env";
 import { KeyEntity } from "../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
 import { GetKeyPostgreRepository } from "../../../src/infra/db/postgreSQL/repositories/get-key-repository";
 import type { Repository } from "typeorm";
@@ -36,24 +34,12 @@ describe("SaveMessage Router", () => {
   });
 
   test("should return message if success", async () => {
-    const token = jwt.sign(
-      {
-        accountId: "fake-account-id",
-      },
-      env.secret
-    );
-
-    const response = await request(app)
-      .post("/key/message")
-      .set({
-        accesstoken: token,
-      })
-      .send({
-        key: "fake-key",
-        message: "Hello world!",
-        userName: "Willian",
-        userId: "fake-user-id",
-      });
+    const response = await request(app).post("/key/message").send({
+      key: "fake-key",
+      message: "Hello world!",
+      userName: "Willian",
+      userId: "fake-user-id",
+    });
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toStrictEqual(
