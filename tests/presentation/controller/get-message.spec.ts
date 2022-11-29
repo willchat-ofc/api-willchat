@@ -1,3 +1,9 @@
+import type {
+  GetMessage,
+  GetMessageInput,
+} from "../../../src/domain/usecase/get-message";
+import { ChatEntity } from "../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
+import type { MessagesEntity } from "../../../src/infra/db/postgreSQL/entities/message-postgresql-entity";
 import { GetMessageController } from "../../../src/presentation/controller/get-message";
 import {
   badRequest,
@@ -16,13 +22,33 @@ const makeValidatorStub = (): Validation => {
   return new ValidatorStub();
 };
 
+const makeGetMessageStub = () => {
+  class GetMessageStub implements GetMessage {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public async get(data: GetMessageInput): Promise<Array<MessagesEntity>> {
+      return [
+        {
+          id: "fake-key",
+          userId: "fake-user-id",
+          chat: new ChatEntity(),
+          message: "Hello world!",
+          userName: "Willian",
+        },
+      ];
+    }
+  }
+  return new GetMessageStub();
+};
+
 const makeSut = () => {
   const validator = makeValidatorStub();
-  const sut = new GetMessageController(validator);
+  const getMessage = makeGetMessageStub();
+  const sut = new GetMessageController(validator, getMessage);
 
   return {
     sut,
     validator,
+    getMessage,
   };
 };
 
@@ -58,5 +84,16 @@ describe("GetMessage Controller", () => {
     const res = await sut.handle(fakeHttpRequest);
 
     expect(res).toStrictEqual(serverError());
+  });
+
+  test("should call getMessage with valid values", async () => {
+    const { sut, getMessage } = makeSut();
+    const getSpy = jest.spyOn(getMessage, "get");
+
+    await sut.handle(fakeHttpRequest);
+
+    expect(getSpy).toBeCalledWith({
+      key: fakeHttpRequest.params.key,
+    });
   });
 });
