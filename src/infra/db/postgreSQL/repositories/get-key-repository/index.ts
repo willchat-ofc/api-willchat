@@ -9,9 +9,9 @@ export class GetKeyPostgreRepository
   extends TypeormRepository
   implements GetKeyRepository
 {
-  public async get(data: GetRepositoryInput): Promise<KeyEntity> {
+  public async get(data: GetRepositoryInput): Promise<Array<KeyEntity>> {
     const keyRepository = this.getRepository(KeyEntity);
-    const key = await keyRepository.findOne({
+    const key = await keyRepository.find({
       where: {
         userId: data.userId,
       },

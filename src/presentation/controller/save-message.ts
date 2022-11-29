@@ -21,7 +21,6 @@ export class SaveMessageController implements Controller {
         message: httpRequest.body.message,
         userName: httpRequest.body.userName,
         userId: httpRequest.body.userId,
-        accountId: httpRequest.body.accountId,
       });
 
       if (!message) return badRequest(new InvalidParamError("key"));

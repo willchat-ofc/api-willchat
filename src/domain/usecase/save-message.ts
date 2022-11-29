@@ -5,7 +5,6 @@ export interface SaveMessageInput {
   message: string;
   userName: string;
   userId: string;
-  accountId: string;
 }
 
 export interface SaveMessage {

@@ -10,7 +10,7 @@ export class SaveKeyPostgreRepository
   extends TypeormRepository
   implements SaveKeyRepository
 {
-  public async save(data: SaveKeyRepositoryInput): Promise<KeyEntity | void> {
+  public async save(data: SaveKeyRepositoryInput): Promise<KeyEntity> {
     const chatRepository = this.getRepository(ChatEntity);
     const chat = new ChatEntity();
 

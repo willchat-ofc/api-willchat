@@ -43,19 +43,19 @@ describe("GetKey Repository", () => {
     await connection.teardownTestDB();
   });
 
-  test("should return null if findOne return null", async () => {
+  test("should return null if find returns an void array", async () => {
     const { sut } = makeSut();
     const key = await sut.get({
       userId: "invalid-user-id",
     });
 
-    expect(key).not.toBeTruthy();
+    expect(key).toHaveLength(0);
   });
 
   test("should return the key if success", async () => {
     const { sut } = makeSut();
     const key = await sut.get(makeFakeRequest);
 
-    expect(key.userId).toBe(makeFakeRequest.userId);
+    expect(key).toHaveLength(1);
   });
 });

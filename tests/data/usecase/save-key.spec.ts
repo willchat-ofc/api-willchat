@@ -10,7 +10,7 @@ import { ChatEntity } from "../../../src/infra/db/postgreSQL/entities/chat-postg
 const makeSaveKeyRepositoryStub = (): SaveKeyRepository => {
   class SaveKeyRepositoryStub implements SaveKeyRepository {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public async save(data: SaveKeyRepositoryInput): Promise<KeyEntity | void> {
+    public async save(data: SaveKeyRepositoryInput): Promise<KeyEntity> {
       return {
         id: "fake-key",
         key: "123",

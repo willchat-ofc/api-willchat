@@ -20,7 +20,7 @@ export class GetKeyController implements Controller {
         userId: httpRequest.body.accountId,
       });
 
-      if (!key) return badRequest(new UserNotExistsError());
+      if (!key.length) return badRequest(new UserNotExistsError());
 
       return ok(key);
     } catch (err) {

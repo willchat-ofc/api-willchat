@@ -41,7 +41,6 @@ const makeFakeRequest: SaveMessageInput = {
   message: "Hello world!",
   userName: "Willian",
   key: "fake-key",
-  accountId: "fake-account-id",
 };
 
 describe("DbSaveMessage", () => {

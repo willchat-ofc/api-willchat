@@ -25,13 +25,15 @@ const makeValidatorStub = (): Validation => {
 const makeGetKeyStub = () => {
   class GetKeyStub implements GetKey {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    public async get(data: GetKeyInput): Promise<KeyEntity> {
-      return {
-        id: "fake-key",
-        key: "123",
-        userId: "fake-user-id",
-        chat: new ChatEntity(),
-      };
+    public async get(data: GetKeyInput): Promise<Array<KeyEntity>> {
+      return [
+        {
+          id: "fake-key",
+          key: "123",
+          userId: "fake-user-id",
+          chat: new ChatEntity(),
+        },
+      ];
     }
   }
 
@@ -82,9 +84,9 @@ describe("GetKey Controller", () => {
       throw new Error();
     });
 
-    const request = await sut.handle(fakeHttpRequest);
+    const res = await sut.handle(fakeHttpRequest);
 
-    expect(request).toStrictEqual(serverError());
+    expect(res).toStrictEqual(serverError());
   });
 
   test("should call getKey with correctly value", async () => {
@@ -107,13 +109,13 @@ describe("GetKey Controller", () => {
     expect(promise).toStrictEqual(serverError());
   });
 
-  test("should return badRequest if getKey return null", async () => {
+  test("should return badRequest if getKey return a void array", async () => {
     const { sut, getKey } = makeSut();
-    jest.spyOn(getKey, "get").mockResolvedValueOnce(null);
+    jest.spyOn(getKey, "get").mockResolvedValueOnce([]);
 
-    const promise = await sut.handle(fakeHttpRequest);
+    const res = await sut.handle(fakeHttpRequest);
 
-    expect(promise).toStrictEqual(badRequest(new UserNotExistsError()));
+    expect(res).toStrictEqual(badRequest(new UserNotExistsError()));
   });
 
   test("should return key if success", async () => {
@@ -121,12 +123,14 @@ describe("GetKey Controller", () => {
     const res = await sut.handle(fakeHttpRequest);
 
     expect(res).toStrictEqual(
-      ok({
-        id: "fake-key",
-        key: "123",
-        userId: "fake-user-id",
-        chat: new ChatEntity(),
-      })
+      ok([
+        {
+          id: "fake-key",
+          key: "123",
+          userId: "fake-user-id",
+          chat: new ChatEntity(),
+        },
+      ])
     );
   });
 });

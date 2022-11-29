@@ -5,5 +5,5 @@ export interface GetKeyInput {
 }
 
 export interface GetKey {
-  get: (data: GetKeyInput) => Promise<KeyEntity>;
+  get: (data: GetKeyInput) => Promise<Array<KeyEntity>>;
 }

@@ -48,7 +48,7 @@ describe("GetKey Router", () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toStrictEqual(
+    expect(response.body[0]).toStrictEqual(
       expect.objectContaining({
         key: "fake-key",
         userId: "fake-account-id",

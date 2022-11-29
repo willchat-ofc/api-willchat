@@ -61,7 +61,6 @@ const fakeHttpRequest: HttpRequest = {
     message: "Hello world!",
     userName: "Willian",
     userId: "fake-user-id",
-    accountId: "fake-account-id",
   },
 };
 

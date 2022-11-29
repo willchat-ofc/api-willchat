@@ -5,5 +5,5 @@ export interface GetRepositoryInput {
 }
 
 export interface GetKeyRepository {
-  get: (data: GetRepositoryInput) => Promise<KeyEntity>;
+  get: (data: GetRepositoryInput) => Promise<Array<KeyEntity>>;
 }

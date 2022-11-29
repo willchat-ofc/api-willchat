@@ -6,5 +6,5 @@ export interface SaveKeyRepositoryInput {
 }
 
 export interface SaveKeyRepository {
-  save: (data: SaveKeyRepositoryInput) => Promise<KeyEntity | void>;
+  save: (data: SaveKeyRepositoryInput) => Promise<KeyEntity>;
 }
