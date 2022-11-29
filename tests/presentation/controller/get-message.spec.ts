@@ -7,6 +7,7 @@ import type { MessagesEntity } from "../../../src/infra/db/postgreSQL/entities/m
 import { GetMessageController } from "../../../src/presentation/controller/get-message";
 import {
   badRequest,
+  ok,
   serverError,
 } from "../../../src/presentation/helpers/http-helper";
 import type { Validation } from "../../../src/presentation/protocols/validation";
@@ -104,5 +105,22 @@ describe("GetMessage Controller", () => {
     const res = await sut.handle(fakeHttpRequest);
 
     expect(res).toStrictEqual(serverError());
+  });
+
+  test("should return ok if success", async () => {
+    const { sut } = makeSut();
+    const res = await sut.handle(fakeHttpRequest);
+
+    expect(res).toStrictEqual(
+      ok([
+        {
+          id: "fake-key",
+          userId: "fake-user-id",
+          chat: new ChatEntity(),
+          message: "Hello world!",
+          userName: "Willian",
+        },
+      ])
+    );
   });
 });
