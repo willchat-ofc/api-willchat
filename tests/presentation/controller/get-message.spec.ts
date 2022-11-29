@@ -96,4 +96,13 @@ describe("GetMessage Controller", () => {
       key: fakeHttpRequest.params.key,
     });
   });
+
+  test("should return serverError if getMessage throws", async () => {
+    const { sut, getMessage } = makeSut();
+    jest.spyOn(getMessage, "get").mockRejectedValueOnce(new Error());
+
+    const res = await sut.handle(fakeHttpRequest);
+
+    expect(res).toStrictEqual(serverError());
+  });
 });
