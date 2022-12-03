@@ -1,4 +1,4 @@
-import { UtilGenerateKey } from "../../../src/utils/generate-key";
+import { UtilGenerateKey } from "../../src/utils/generate-key";
 
 jest.mock("uid", () => ({
   uid(): string {

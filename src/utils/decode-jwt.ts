@@ -1,4 +1,4 @@
-import type { DecodeJwt } from "../../presentation/protocols/decode-jwt";
+import type { DecodeJwt } from "../presentation/protocols/decode-jwt";
 import jwt from "jsonwebtoken";
 
 export class UtilDecodeJwt implements DecodeJwt {

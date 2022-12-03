@@ -1,4 +1,4 @@
-import { UtilDecodeJwt } from "../../../src/utils/decode-jwt";
+import { UtilDecodeJwt } from "../../src/utils/decode-jwt";
 
 jest.mock("jsonwebtoken", () => ({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

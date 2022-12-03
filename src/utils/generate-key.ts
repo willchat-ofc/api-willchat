@@ -1,4 +1,4 @@
-import type { GenerateKey } from "../../data/protocols/generate-key";
+import type { GenerateKey } from "../data/protocols/generate-key";
 import uid from "uid";
 
 export class UtilGenerateKey implements GenerateKey {

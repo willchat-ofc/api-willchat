@@ -53,3 +53,32 @@ Just send the accessToken in the header for create your key.
 ```
 
 It's your list of chats key.
+
+### /key/message POST `Dont need accessToken`
+
+We need some key to save any message, then just use this router to save the message.
+
+#### Request BODY
+
+```json
+{
+  "key": "fake-key",
+  "message": "Hello world!",
+  "userName": "Willian",
+  "userId": "fake-user-id"
+}
+```
+
+#### Response
+
+```json
+{
+  "chat": {
+    "id": "33464c55-d19e-4f9e-9c3a-0105c301118e"
+  },
+  "message": "Hello world!",
+  "userId": "fake-user-id",
+  "userName": "Willian",
+  "id": "3a711f4f-2383-495c-9290-2f9cfd4e146d"
+}
+```
