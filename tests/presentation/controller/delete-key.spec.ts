@@ -26,7 +26,7 @@ const makeSut = () => {
 
 const fakeHttpRequest: HttpRequest = {
   body: {
-    accountId: "fake-account-id",
+    key: "fake-key",
   },
 };
 
