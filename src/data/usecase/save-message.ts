@@ -1,9 +1,9 @@
 import type {
   SaveMessage,
   SaveMessageInput,
-} from "../../../domain/usecase/save-message";
-import type { MessagesEntity } from "../../../infra/db/postgreSQL/entities/message-postgresql-entity";
-import type { SaveMessageRepository } from "../../protocols/save-message-repository";
+} from "../../domain/usecase/save-message";
+import type { MessagesEntity } from "../../infra/db/postgreSQL/entities/message-postgresql-entity";
+import type { SaveMessageRepository } from "../protocols/save-message-repository";
 
 export class DbSaveMessage implements SaveMessage {
   public constructor(

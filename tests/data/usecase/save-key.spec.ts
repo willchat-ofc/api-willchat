@@ -2,7 +2,7 @@ import type {
   SaveKeyRepository,
   SaveKeyRepositoryInput,
 } from "./../../../src/data/protocols/save-key-repository";
-import { DbSaveKey } from "../../../src/data/usecase/save-key/save-key";
+import { DbSaveKey } from "../../../src/data/usecase/save-key";
 import type { GenerateKey } from "../../../src/data/protocols/generate-key";
 import type { KeyEntity } from "../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
 import { ChatEntity } from "../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";

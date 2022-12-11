@@ -2,7 +2,7 @@ import type {
   SaveMessageRepository,
   SaveMessageRepositoryInput,
 } from "../../../src/data/protocols/save-message-repository";
-import { DbSaveMessage } from "../../../src/data/usecase/save-message/save-message";
+import { DbSaveMessage } from "../../../src/data/usecase/save-message";
 import type { SaveMessageInput } from "../../../src/domain/usecase/save-message";
 import { ChatEntity } from "../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
 import type { MessagesEntity } from "../../../src/infra/db/postgreSQL/entities/message-postgresql-entity";

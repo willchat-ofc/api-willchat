@@ -1,7 +1,7 @@
-import type { SaveKey, SaveKeyInput } from "../../../domain/usecase/save-key";
-import type { KeyEntity } from "../../../infra/db/postgreSQL/entities/key-postgresql-entity";
-import type { GenerateKey } from "../../protocols/generate-key";
-import type { SaveKeyRepository } from "../../protocols/save-key-repository";
+import type { SaveKey, SaveKeyInput } from "../../domain/usecase/save-key";
+import type { KeyEntity } from "../../infra/db/postgreSQL/entities/key-postgresql-entity";
+import type { GenerateKey } from "../protocols/generate-key";
+import type { SaveKeyRepository } from "../protocols/save-key-repository";
 
 export class DbSaveKey implements SaveKey {
   public constructor(
