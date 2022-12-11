@@ -51,12 +51,27 @@ describe("GetMessage Database", () => {
     expect(getSpy).toBeCalledWith(fakeParams);
   });
 
-  test("should throw  if getMessageRepository throws", async () => {
+  test("should throw if getMessageRepository throws", async () => {
     const { sut, getMessageRepository } = makeSut();
     jest.spyOn(getMessageRepository, "get").mockRejectedValueOnce(new Error());
 
     const promise = sut.get(fakeParams);
 
     await expect(promise).rejects.toThrow();
+  });
+
+  test("should return array of message if success", async () => {
+    const { sut } = makeSut();
+
+    const res = await sut.get(fakeParams);
+
+    expect(res).toStrictEqual([
+      {
+        chat: new ChatEntity(),
+        message: "hello",
+        userId: "fake-user-id",
+        userName: "fake-user-name",
+      },
+    ]);
   });
 });
