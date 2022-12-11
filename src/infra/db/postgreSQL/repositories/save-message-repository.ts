@@ -1,10 +1,10 @@
 import type {
   SaveMessageRepository,
   SaveMessageRepositoryInput,
-} from "../../../../../data/protocols/save-message-repository";
-import { TypeormRepository } from "../../../helper/repository";
-import { KeyEntity } from "../../entities/key-postgresql-entity";
-import { MessagesEntity } from "../../entities/message-postgresql-entity";
+} from "../../../../data/protocols/save-message-repository";
+import { TypeormRepository } from "../../helper/repository";
+import { KeyEntity } from "../entities/key-postgresql-entity";
+import { MessagesEntity } from "../entities/message-postgresql-entity";
 
 export class SaveMessagePostgreRepository
   extends TypeormRepository

@@ -1,9 +1,9 @@
 import type {
   GetKeyRepository,
   GetRepositoryInput,
-} from "../../../../../data/protocols/get-key-repository";
-import { TypeormRepository } from "../../../helper/repository";
-import { KeyEntity } from "../../entities/key-postgresql-entity";
+} from "../../../../data/protocols/get-key-repository";
+import { TypeormRepository } from "../../helper/repository";
+import { KeyEntity } from "../entities/key-postgresql-entity";
 
 export class GetKeyPostgreRepository
   extends TypeormRepository

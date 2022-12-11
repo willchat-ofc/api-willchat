@@ -1,10 +1,10 @@
-import { ChatEntity } from "./../../entities/chat-postgresql-entity";
+import { ChatEntity } from "../entities/chat-postgresql-entity";
 import type {
   SaveKeyRepository,
   SaveKeyRepositoryInput,
-} from "./../../../../../data/protocols/save-key-repository";
-import { KeyEntity } from "../../entities/key-postgresql-entity";
-import { TypeormRepository } from "../../../helper/repository";
+} from "../../../../data/protocols/save-key-repository";
+import { KeyEntity } from "../entities/key-postgresql-entity";
+import { TypeormRepository } from "../../helper/repository";
 
 export class SaveKeyPostgreRepository
   extends TypeormRepository

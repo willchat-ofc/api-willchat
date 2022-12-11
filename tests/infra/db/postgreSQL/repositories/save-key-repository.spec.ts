@@ -1,4 +1,4 @@
-import { SaveKeyPostgreRepository } from "./../../../../../src/infra/db/postgreSQL/repositories/save-key-repository/index";
+import { SaveKeyPostgreRepository } from "../../../../../src/infra/db/postgreSQL/repositories/save-key-repository";
 import { TestTypeormHelper } from "../mocks/postgre-test-helper";
 import type { Repository } from "typeorm";
 import { KeyEntity } from "../../../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
