@@ -50,4 +50,13 @@ describe("GetMessage Database", () => {
 
     expect(getSpy).toBeCalledWith(fakeParams);
   });
+
+  test("should throw  if getMessageRepository throws", async () => {
+    const { sut, getMessageRepository } = makeSut();
+    jest.spyOn(getMessageRepository, "get").mockRejectedValueOnce(new Error());
+
+    const promise = sut.get(fakeParams);
+
+    await expect(promise).rejects.toThrow();
+  });
 });
