@@ -1,3 +1,7 @@
+import type {
+  DeleteKey,
+  DeleteKeyInput,
+} from "../../../src/domain/usecase/delete-key";
 import { DeleteKeyController } from "../../../src/presentation/controller/delete-key";
 import {
   badRequest,
@@ -17,19 +21,33 @@ const makeValidatorStub = (): Validation => {
   return new ValidatorStub();
 };
 
+const makeDeleteKeyStub = (): DeleteKey => {
+  class DeleteKeyStub implements DeleteKey {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public async delete(data: DeleteKeyInput): Promise<void> {
+      return;
+    }
+  }
+
+  return new DeleteKeyStub();
+};
+
 const makeSut = () => {
   const validator = makeValidatorStub();
-  const sut = new DeleteKeyController(validator);
+  const deleteKey = makeDeleteKeyStub();
+  const sut = new DeleteKeyController(validator, deleteKey);
 
   return {
     sut,
     validator,
+    deleteKey,
   };
 };
 
 const fakeHttpRequest: HttpRequest = {
   body: {
     key: "fake-key",
+    accountId: "fake-account-id",
   },
 };
 
@@ -59,5 +77,14 @@ describe("DeleteKey Controller", () => {
     const res = await sut.handle(fakeHttpRequest);
 
     expect(res).toStrictEqual(serverError());
+  });
+
+  test("should call deleteKey with correct values", async () => {
+    const { sut, deleteKey } = makeSut();
+    const deleteSpy = jest.spyOn(deleteKey, "delete");
+
+    await sut.handle(fakeHttpRequest);
+
+    expect(deleteSpy).toBeCalledWith(fakeHttpRequest.body);
   });
 });
