@@ -10,6 +10,7 @@ export const adaptRoute = (controller: Controller) => {
         accountId: req.accountId,
       },
       header: req.headers,
+      params: req.params,
     };
 
     const httpResponse = await controller.handle(httpRequest);
