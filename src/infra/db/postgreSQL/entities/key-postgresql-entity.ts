@@ -20,6 +20,6 @@ export class KeyEntity {
   @JoinColumn()
   public chat: ChatEntity;
 
-  @Column()
+  @Column({ unique: true })
   public key!: string;
 }
