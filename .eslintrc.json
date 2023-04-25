@@ -1,11 +1,11 @@
 {
   "root": true,
   "extends": [
-    "@techmmunity/eslint-config",
     "@techmmunity/eslint-config/typescript",
     "@techmmunity/eslint-config/jest"
   ],
   "rules": {
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "require-await": "off"
   }
 }
