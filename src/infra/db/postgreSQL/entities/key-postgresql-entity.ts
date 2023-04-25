@@ -16,7 +16,7 @@ export class KeyEntity {
   @PrimaryColumn()
   public userId!: string;
 
-  @OneToOne(() => ChatEntity)
+  @OneToOne(() => ChatEntity, { cascade: true })
   @JoinColumn()
   public chat: ChatEntity;
 
