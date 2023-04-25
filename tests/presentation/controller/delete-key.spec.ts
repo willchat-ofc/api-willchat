@@ -46,8 +46,10 @@ const makeSut = () => {
 
 const fakeHttpRequest: HttpRequest = {
   body: {
-    key: "fake-key",
     accountId: "fake-account-id",
+  },
+  header: {
+    key: "fake-key",
   },
 };
 
@@ -65,7 +67,7 @@ describe("DeleteKey Controller", () => {
     const validateSpy = jest.spyOn(validator, "validate");
     await sut.handle(fakeHttpRequest);
 
-    expect(validateSpy).toBeCalledWith(fakeHttpRequest.body);
+    expect(validateSpy).toBeCalledWith(fakeHttpRequest.header);
   });
 
   test("should return serverError if validator throws", async () => {
@@ -85,6 +87,9 @@ describe("DeleteKey Controller", () => {
 
     await sut.handle(fakeHttpRequest);
 
-    expect(deleteSpy).toBeCalledWith(fakeHttpRequest.body);
+    expect(deleteSpy).toBeCalledWith({
+      key: fakeHttpRequest.header.key,
+      accountId: fakeHttpRequest.body.accountId,
+    });
   });
 });
