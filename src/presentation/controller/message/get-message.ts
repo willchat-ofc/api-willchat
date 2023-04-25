@@ -1,8 +1,8 @@
-import type { GetMessage } from "../../domain/usecase/get-message";
-import { badRequest, ok, serverError } from "../helpers/http-helper";
-import type { Controller } from "../protocols/controller";
-import type { HttpRequest, HttpResponse } from "../protocols/http";
-import type { Validation } from "../protocols/validation";
+import type { GetMessage } from "../../../domain/usecase/get-message";
+import { badRequest, ok, serverError } from "../../helpers/http-helper";
+import type { Controller } from "../../protocols/controller";
+import type { HttpRequest, HttpResponse } from "../../protocols/http";
+import type { Validation } from "../../protocols/validation";
 
 export class GetMessageController implements Controller {
   public constructor(

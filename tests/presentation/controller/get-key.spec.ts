@@ -1,7 +1,7 @@
 import type { GetKey, GetKeyInput } from "../../../src/domain/usecase/get-key";
 import { ChatEntity } from "../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
 import type { KeyEntity } from "../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
-import { GetKeyController } from "../../../src/presentation/controller/get-key";
+import { GetKeyController } from "../../../src/presentation/controller/key/get-key";
 import { UserNotExistsError } from "../../../src/presentation/errors/user-not-exists-error";
 import {
   badRequest,

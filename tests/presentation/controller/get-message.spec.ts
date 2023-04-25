@@ -4,7 +4,7 @@ import type {
 } from "../../../src/domain/usecase/get-message";
 import { ChatEntity } from "../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
 import type { MessagesEntity } from "../../../src/infra/db/postgreSQL/entities/message-postgresql-entity";
-import { GetMessageController } from "../../../src/presentation/controller/get-message";
+import { GetMessageController } from "../../../src/presentation/controller/message/get-message";
 import {
   badRequest,
   ok,

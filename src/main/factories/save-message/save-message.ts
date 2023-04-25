@@ -1,6 +1,6 @@
 import { DbSaveMessage } from "../../../data/usecase/save-message";
 import { SaveMessagePostgreRepository } from "../../../infra/db/postgreSQL/repositories/save-message-repository";
-import { SaveMessageController } from "../../../presentation/controller/save-message";
+import { SaveMessageController } from "../../../presentation/controller/message/save-message";
 import { makeSaveMessageValidation } from "./save-message-validations";
 
 export const makeSaveMessageController = () => {

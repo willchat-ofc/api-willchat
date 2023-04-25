@@ -2,7 +2,7 @@ import type {
   DeleteKey,
   DeleteKeyInput,
 } from "../../../src/domain/usecase/delete-key";
-import { DeleteKeyController } from "../../../src/presentation/controller/delete-key";
+import { DeleteKeyController } from "../../../src/presentation/controller/key/delete-key";
 import {
   badRequest,
   serverError,

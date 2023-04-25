@@ -1,5 +1,5 @@
 import { makeSaveKeyValidation } from "./save-key-validation";
-import { SaveKeyController } from "../../../presentation/controller/save-key";
+import { SaveKeyController } from "../../../presentation/controller/key/save-key";
 import { DbSaveKey } from "../../../data/usecase/save-key";
 import { SaveKeyPostgreRepository } from "../../../infra/db/postgreSQL/repositories/save-key-repository";
 import { UtilGenerateKey } from "../../../utils/generate-key";

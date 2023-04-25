@@ -1,9 +1,9 @@
-import type { SaveMessage } from "../../domain/usecase/save-message";
-import { InvalidParamError } from "../errors/invalid-param-error";
-import { badRequest, ok, serverError } from "../helpers/http-helper";
-import type { Controller } from "../protocols/controller";
-import type { HttpRequest, HttpResponse } from "../protocols/http";
-import type { Validation } from "../protocols/validation";
+import type { SaveMessage } from "../../../domain/usecase/save-message";
+import { InvalidParamError } from "../../errors/invalid-param-error";
+import { badRequest, ok, serverError } from "../../helpers/http-helper";
+import type { Controller } from "../../protocols/controller";
+import type { HttpRequest, HttpResponse } from "../../protocols/http";
+import type { Validation } from "../../protocols/validation";
 
 export class SaveMessageController implements Controller {
   public constructor(
