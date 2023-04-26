@@ -3,7 +3,11 @@ import type {
   DeleteMessageInput,
 } from "../../../src/domain/usecase/delete-message";
 import { DeleteMessageController } from "../../../src/presentation/controller/message/delete-message";
-import { badRequest } from "../../../src/presentation/helpers/http-helper";
+import {
+  badRequest,
+  ok,
+  serverError,
+} from "../../../src/presentation/helpers/http-helper";
 import type { HttpRequest } from "../../../src/presentation/protocols/http";
 import type { Validation } from "../../../src/presentation/protocols/validation";
 
@@ -79,5 +83,22 @@ describe("DeleteKey Controller", () => {
       messageId: fakeHttpRequest.header.messageId,
       accountId: fakeHttpRequest.body.accountId,
     });
+  });
+
+  test("should return serverError if deleteMessage throws", async () => {
+    const { sut, deleteMessage } = makeSut();
+    jest.spyOn(deleteMessage, "delete").mockRejectedValueOnce(new Error());
+
+    const response = await sut.handle(fakeHttpRequest);
+
+    expect(response).toStrictEqual(serverError());
+  });
+
+  test("should return ok if success", async () => {
+    const { sut } = makeSut();
+
+    const response = await sut.handle(fakeHttpRequest);
+
+    expect(response).toStrictEqual(ok());
   });
 });
