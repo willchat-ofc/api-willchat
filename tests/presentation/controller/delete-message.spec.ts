@@ -1,3 +1,7 @@
+import type {
+  DeleteMessage,
+  DeleteMessageInput,
+} from "../../../src/domain/usecase/delete-message";
 import { DeleteMessageController } from "../../../src/presentation/controller/message/delete-message";
 import { badRequest } from "../../../src/presentation/helpers/http-helper";
 import type { HttpRequest } from "../../../src/presentation/protocols/http";
@@ -14,13 +18,26 @@ const makeValidatorStub = (): Validation => {
   return new ValidatorStub();
 };
 
+const makeDeleteMessageStub = () => {
+  class DeleteMessageStub implements DeleteMessage {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    public async delete(data: DeleteMessageInput): Promise<void> {
+      return;
+    }
+  }
+
+  return new DeleteMessageStub();
+};
+
 const makeSut = () => {
   const validator = makeValidatorStub();
-  const sut = new DeleteMessageController(validator);
+  const deleteMessage = makeDeleteMessageStub();
+  const sut = new DeleteMessageController(validator, deleteMessage);
 
   return {
     sut,
     validator,
+    deleteMessage,
   };
 };
 
@@ -49,5 +66,18 @@ describe("DeleteKey Controller", () => {
     await sut.handle(fakeHttpRequest);
 
     expect(validateSpy).toBeCalledWith(fakeHttpRequest.header);
+  });
+
+  test("should call deleteMessage with correct values", async () => {
+    const { sut, deleteMessage } = makeSut();
+    const deleteSpy = jest.spyOn(deleteMessage, "delete");
+
+    await sut.handle(fakeHttpRequest);
+
+    expect(deleteSpy).toBeCalledWith({
+      key: fakeHttpRequest.header.key,
+      messageId: fakeHttpRequest.header.messageId,
+      accountId: fakeHttpRequest.body.accountId,
+    });
   });
 });
