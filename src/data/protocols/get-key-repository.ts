@@ -1,9 +1,9 @@
 import type { KeyEntity } from "../../infra/db/postgreSQL/entities/key-postgresql-entity";
 
-export interface GetRepositoryInput {
+export interface GetKeyRepositoryInput {
   userId: string;
 }
 
 export interface GetKeyRepository {
-  get: (data: GetRepositoryInput) => Promise<Array<KeyEntity>>;
+  get: (data: GetKeyRepositoryInput) => Promise<Array<KeyEntity>>;
 }
