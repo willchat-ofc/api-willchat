@@ -1,7 +1,6 @@
 import type { Repository } from "typeorm";
 
 import type { DeleteKeyRepositoryInput } from "../../../../../src/data/protocols/delete-key-repository";
-import { ChatEntity } from "../../../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
 import { KeyEntity } from "../../../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
 import { DeleteKeyPostgreRepository } from "../../../../../src/infra/db/postgreSQL/repositories/delete-key-repository";
 import { TestTypeormHelper } from "../mocks/postgre-test-helper";
@@ -22,7 +21,6 @@ const fakeRequest: DeleteKeyRepositoryInput = {
 describe("GetKey Repository", () => {
   let connection: TestTypeormHelper;
   let keyRepository: Repository<KeyEntity>;
-  let chatRepository: Repository<ChatEntity>;
 
   beforeAll(async () => {
     connection = new TestTypeormHelper();
@@ -30,15 +28,13 @@ describe("GetKey Repository", () => {
 
     const postgreRepository = new DeleteKeyPostgreRepository();
     keyRepository = postgreRepository.getRepository(KeyEntity);
+  });
 
-    const fakeChat = new ChatEntity();
+  beforeEach(async () => {
     const fakeKey = new KeyEntity();
-    fakeKey.chat = fakeChat;
     fakeKey.userId = "fake-user-id";
     fakeKey.key = "fake-key";
 
-    chatRepository = postgreRepository.getRepository(ChatEntity);
-    await chatRepository.save(fakeChat);
     await keyRepository.save(fakeKey);
   });
 
@@ -54,6 +50,9 @@ describe("GetKey Repository", () => {
   });
 
   test("should delete fake-key", async () => {
+    const { sut } = makeSut();
+    await sut.delete(fakeRequest);
+
     const key = await keyRepository.find({
       where: {
         key: fakeRequest.key,
