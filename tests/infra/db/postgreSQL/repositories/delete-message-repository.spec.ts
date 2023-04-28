@@ -45,8 +45,17 @@ describe("GetKey Repository", () => {
 
     await keyRepository.save(fakeKey);
     await chatRepository.save(fakeChat);
+  });
+
+  beforeEach(async () => {
+    const key = await keyRepository.findOne({
+      where: {
+        key: fakeRequest.key,
+      },
+    });
+
     await messagesRepository.save({
-      chat: fakeChat,
+      chat: key.chat,
       id: "fake_message_id",
       message: "Hello everyone!",
       userId: "fake-user-id",
@@ -66,6 +75,10 @@ describe("GetKey Repository", () => {
   });
 
   test("should delete fake-key", async () => {
+    const { sut } = makeSut();
+
+    await sut.delete(fakeRequest);
+
     const messages = await messagesRepository.find({
       where: {
         id: fakeRequest.messageId,

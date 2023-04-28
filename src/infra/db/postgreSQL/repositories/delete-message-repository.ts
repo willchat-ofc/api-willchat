@@ -22,12 +22,20 @@ export class DeleteMessagePostgreRepository
       relations: ["chat"],
     });
 
+    console.log(await messageRepository.findOneBy({ id: data.messageId }));
+
     await messageRepository
       .createQueryBuilder("messages")
-      .leftJoinAndSelect("messages.chat", "chat")
+      .leftJoinAndSelect("messages.chat", "chat", "chat = :id", {
+        id: key.chat.id,
+      })
       .where("messages.id = :id", { id: data.messageId })
-      .andWhere("chat.id = :key", { key: key.chat.id })
       .delete()
-      .execute();
+      .execute()
+      .catch((res) => {
+        console.log(res);
+      });
+
+    console.log(await messageRepository.findOneBy({ id: data.messageId }));
   }
 }

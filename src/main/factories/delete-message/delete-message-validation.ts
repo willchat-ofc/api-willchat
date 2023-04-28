@@ -5,7 +5,7 @@ import type { Validation } from "../../../presentation/protocols/validation";
 export const makeDeleteMessageValidation = () => {
   const validations: Array<Validation> = [];
 
-  for (const field of ["key", "messageId"]) {
+  for (const field of ["key", "messageid"]) {
     validations.push(new RequiredFieldValidation(field));
   }
 

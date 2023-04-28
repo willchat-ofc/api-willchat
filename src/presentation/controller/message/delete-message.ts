@@ -17,7 +17,7 @@ export class DeleteMessageController implements Controller {
 
       await this.deleteMessage.delete({
         key: httpRequest.header.key,
-        messageId: httpRequest.header.messageId,
+        messageId: httpRequest.header.messageid,
         accountId: httpRequest.body.accountId,
       });
 

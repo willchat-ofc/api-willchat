@@ -6,19 +6,20 @@ import { env } from "../../../src/main/config/env";
 import { KeyEntity } from "../../../src/infra/db/postgreSQL/entities/key-postgresql-entity";
 import type { Repository } from "typeorm";
 import { ChatEntity } from "../../../src/infra/db/postgreSQL/entities/chat-postgresql-entity";
-import { GetKeyPostgreRepository } from "../../../src/infra/db/postgreSQL/repositories/get-key-repository";
+import { MessagesEntity } from "../../../src/infra/db/postgreSQL/entities/message-postgresql-entity";
+import { DeleteMessagePostgreRepository } from "../../../src/infra/db/postgreSQL/repositories/delete-message-repository";
 
-describe("DeleteKey Router", () => {
+describe("DeleteMessage Router", () => {
   let connection: TestTypeormHelper;
   let keyRepository: Repository<KeyEntity>;
   let chatRepository: Repository<ChatEntity>;
+  let messagesRepository: Repository<MessagesEntity>;
 
   beforeAll(async () => {
     connection = new TestTypeormHelper();
     await connection.setupTestDB();
 
-    const postgreRepository = new GetKeyPostgreRepository();
-    keyRepository = postgreRepository.getRepository(KeyEntity);
+    const postgreRepository = new DeleteMessagePostgreRepository();
 
     const fakeChat = new ChatEntity();
     const fakeKey = new KeyEntity();
@@ -26,9 +27,19 @@ describe("DeleteKey Router", () => {
     fakeKey.userId = "fake-account-id";
     fakeKey.key = "fake-key";
 
+    keyRepository = postgreRepository.getRepository(KeyEntity);
     chatRepository = postgreRepository.getRepository(ChatEntity);
-    await chatRepository.save(fakeChat);
+    messagesRepository = postgreRepository.getRepository(MessagesEntity);
+
     await keyRepository.save(fakeKey);
+    await chatRepository.save(fakeChat);
+    await messagesRepository.save({
+      chat: fakeKey.chat,
+      id: "fake-message-id",
+      message: "Hello everyone!",
+      userId: "fake-user-id",
+      userName: "fake-user-name",
+    });
   });
 
   afterAll(async () => {
@@ -43,18 +54,18 @@ describe("DeleteKey Router", () => {
       env.secret
     );
 
-    const response = await request(app).delete("/key").set({
+    const response = await request(app).delete("/key/message").set({
       accesstoken: token,
       key: "fake-key",
-    });
-    const exitsKey = await keyRepository.find({
-      where: {
-        key: "fake-key",
-        userId: "fake-account-id",
-      },
+      messageid: "fake-message-id",
     });
 
-    expect(exitsKey).toHaveLength(0);
+    const exitsMessage = await messagesRepository.findOneBy({
+      id: "fake-message-id",
+    });
+    console.log(response.body);
+
     expect(response.statusCode).toBe(200);
+    expect(exitsMessage).not.toBeTruthy();
   });
 });

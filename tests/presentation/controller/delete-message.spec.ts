@@ -47,7 +47,7 @@ const makeSut = () => {
 
 const fakeHttpRequest: HttpRequest = {
   header: {
-    messageId: "fake-account-id",
+    messageid: "fake-account-id",
     key: "fake-key",
   },
   body: {
@@ -80,7 +80,7 @@ describe("DeleteKey Controller", () => {
 
     expect(deleteSpy).toBeCalledWith({
       key: fakeHttpRequest.header.key,
-      messageId: fakeHttpRequest.header.messageId,
+      messageId: fakeHttpRequest.header.messageid,
       accountId: fakeHttpRequest.body.accountId,
     });
   });
