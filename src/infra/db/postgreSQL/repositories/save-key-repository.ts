@@ -15,13 +15,6 @@ export class SaveKeyPostgreRepository
     const chat = new ChatEntity();
 
     const keyRepository = this.getRepository(KeyEntity);
-    const existsUser = await keyRepository.findOne({
-      where: {
-        userId: data.userId,
-      },
-    });
-
-    if (existsUser) return;
 
     const key = new KeyEntity();
     key.chat = chat;

@@ -3,7 +3,6 @@ import {
   Entity,
   JoinColumn,
   OneToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { ChatEntity } from "./chat-postgresql-entity";
@@ -13,7 +12,7 @@ export class KeyEntity {
   @PrimaryGeneratedColumn("uuid")
   public id!: string;
 
-  @PrimaryColumn()
+  @Column()
   public userId!: string;
 
   @OneToOne(() => ChatEntity, { cascade: true })

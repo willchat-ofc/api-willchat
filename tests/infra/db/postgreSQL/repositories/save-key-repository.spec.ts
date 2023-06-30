@@ -61,14 +61,6 @@ describe("SaveKey Repository", () => {
     expect(data.chat).toBeTruthy();
   });
 
-  test("should return void if user already exists", async () => {
-    const { sut } = makeSut();
-    await sut.save(makeFakeRequest);
-    const res = await sut.save(makeFakeRequest);
-
-    expect(res).not.toBeTruthy();
-  });
-
   test("should return key if success", async () => {
     const { sut } = makeSut();
     const res = await sut.save(makeFakeRequest);
