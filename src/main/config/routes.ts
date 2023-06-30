@@ -8,14 +8,20 @@ export const setupRoutes = (app: Express) => {
   app.use(router);
 
   fg.sync([
-    "**/src/main/routes/**.router.ts",
-    "**/src/main/routes/**-router/**.router.ts",
+    "**/src/main/routes/**-router.ts",
+    "**/src/main/routes/**-router/**-router.ts",
   ]).map(async (file) => {
     const fileList = file.split("/");
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     const index = fileList.length - 1;
     console.log(`Loading the file router ${fileList[index]} ...`);
 
-    (await import(`../../../${file}`)).default(router);
+    (
+      await import(
+        `../../../${
+          process.env.JEST_WORKER_ID ? file : file.replace("ts", "js")
+        }`
+      )
+    ).default(router);
   });
 };

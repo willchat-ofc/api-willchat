@@ -9,6 +9,8 @@
   "private": false,
   "scripts": {
     "dev": "tsnd ./src/main/server.ts",
+    "start": "node dist/src/main/server.js",
+    "build": "tsc",
     "test": "jest --passWithNoTests --silent --noStackTrace --RunInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "yarn test -- --watch -c jest-unit-config.js",
