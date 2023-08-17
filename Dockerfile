@@ -1,5 +1,7 @@
 FROM node:alpine
 
+RUN apk add --no-cache python3 make g++
+
 WORKDIR /usr/app
 
 COPY package.json ./
@@ -12,6 +14,6 @@ COPY . .
 RUN yarn build
 
 
-EXPOSE 8080
+EXPOSE 6060
 
 CMD ["yarn", "start"]
