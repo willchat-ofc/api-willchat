@@ -17,7 +17,11 @@ export const setupRoutes = (app: Express) => {
     console.log(`Loading the file router ${fileList[index]} ...`);
 
     (
-      await import(`../../../${process.env.JEST_WORKER_ID ? file : file}`)
+      await import(
+        `../../../${
+          process.env.JEST_WORKER_ID ? file : file.replace("ts", "js")
+        }`
+      )
     ).default(router);
   });
 };
