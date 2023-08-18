@@ -17,6 +17,8 @@ export class GetMessageController implements Controller {
 
       const message = await this.getMessage.get({
         key: httpRequest.params.key,
+        offset: httpRequest.params.offset,
+        limit: httpRequest.params.limit,
       });
 
       return ok(message);

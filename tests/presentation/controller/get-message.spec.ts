@@ -10,6 +10,7 @@ import {
   ok,
   serverError,
 } from "../../../src/presentation/helpers/http-helper";
+import type { HttpRequest } from "../../../src/presentation/protocols/http";
 import type { Validation } from "../../../src/presentation/protocols/validation";
 
 const makeValidatorStub = (): Validation => {
@@ -53,9 +54,11 @@ const makeSut = () => {
   };
 };
 
-const fakeHttpRequest = {
+const fakeHttpRequest: HttpRequest = {
   params: {
     key: "fake-key",
+    offset: 0,
+    limit: 10,
   },
 };
 
@@ -93,9 +96,7 @@ describe("GetMessage Controller", () => {
 
     await sut.handle(fakeHttpRequest);
 
-    expect(getSpy).toBeCalledWith({
-      key: fakeHttpRequest.params.key,
-    });
+    expect(getSpy).toBeCalledWith(fakeHttpRequest.params);
   });
 
   test("should return serverError if getMessage throws", async () => {
