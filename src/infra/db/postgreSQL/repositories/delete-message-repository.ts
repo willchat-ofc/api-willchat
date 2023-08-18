@@ -22,8 +22,6 @@ export class DeleteMessagePostgreRepository
       relations: ["chat"],
     });
 
-    console.log(await messageRepository.findOneBy({ id: data.messageId }));
-
     await messageRepository
       .createQueryBuilder("messages")
       .leftJoinAndSelect("messages.chat", "chat", "chat = :id", {
@@ -35,7 +33,5 @@ export class DeleteMessagePostgreRepository
       .catch((res) => {
         console.log(res);
       });
-
-    console.log(await messageRepository.findOneBy({ id: data.messageId }));
   }
 }

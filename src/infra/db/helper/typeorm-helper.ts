@@ -24,7 +24,8 @@ export class TypeormHelper {
       });
       this.connection = await dataSource.initialize();
       console.log("Data Source has been started");
-    } catch {
+    } catch (err) {
+      console.log(err);
       console.log("Error during Data Source initialization");
     }
   }
