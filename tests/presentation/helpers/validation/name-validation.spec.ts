@@ -1,8 +1,8 @@
 import { InvalidParamError } from "../../../../src/presentation/errors/invalid-param-error";
-import { NameValidation } from "../../../../src/presentation/helpers/validators/name-validation/name-validation";
+import { UserNameValidation } from "../../../../src/presentation/helpers/validators/name-validation/name-validation";
 
 const makeSut = () => {
-  const sut = new NameValidation();
+  const sut = new UserNameValidation();
 
   return {
     sut,
