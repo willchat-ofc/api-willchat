@@ -29,6 +29,11 @@ export class GetMessagePostgreRepository
       where: {
         chat: key.chat,
       },
+      skip: data.offset,
+      take: data.limit,
+      order: {
+        createdAt: "DESC",
+      },
     });
   }
 }

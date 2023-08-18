@@ -2,8 +2,8 @@ import type { MessagesEntity } from "../../infra/db/postgreSQL/entities/message-
 
 export interface GetMessageInput {
   key: string;
-  offset: number;
-  limit: number;
+  offset?: number;
+  limit?: number;
 }
 
 export interface GetMessage {
