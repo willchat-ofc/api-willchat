@@ -40,7 +40,7 @@ export class GetMessagePostgreRepository
   public getPaginationSettings(
     data: GetMessageRepositoryInput
   ): FindManyOptions<MessagesEntity> {
-    return !data.offset || !data.limit
+    return data.offset || data.limit
       ? {
           skip: data.offset,
           take: data.limit,
