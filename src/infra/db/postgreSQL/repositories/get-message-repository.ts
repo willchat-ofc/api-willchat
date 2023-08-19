@@ -1,3 +1,4 @@
+import type { FindManyOptions } from "typeorm";
 import type {
   GetMessageRepository,
   GetMessageRepositoryInput,
@@ -25,15 +26,28 @@ export class GetMessagePostgreRepository
       },
     });
 
+    const settings: FindManyOptions<MessagesEntity> =
+      this.getPaginationSettings(data);
+
     return messageRepository.find({
       where: {
         chat: key.chat,
       },
-      skip: data.offset,
-      take: data.limit,
-      order: {
-        createdAt: "DESC",
-      },
+      ...settings,
     });
+  }
+
+  public getPaginationSettings(
+    data: GetMessageRepositoryInput
+  ): FindManyOptions<MessagesEntity> {
+    return !data.offset || !data.limit
+      ? {
+          skip: data.offset,
+          take: data.limit,
+          order: {
+            createdAt: "DESC",
+          },
+        }
+      : {};
   }
 }
