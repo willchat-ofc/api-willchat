@@ -57,6 +57,8 @@ const makeSut = () => {
 const fakeHttpRequest: HttpRequest = {
   params: {
     key: "fake-key",
+  },
+  header: {
     offset: 0,
     limit: 10,
   },
@@ -96,7 +98,10 @@ describe("GetMessage Controller", () => {
 
     await sut.handle(fakeHttpRequest);
 
-    expect(getSpy).toBeCalledWith(fakeHttpRequest.params);
+    expect(getSpy).toBeCalledWith({
+      ...fakeHttpRequest.params,
+      ...fakeHttpRequest.header,
+    });
   });
 
   test("should return serverError if getMessage throws", async () => {
