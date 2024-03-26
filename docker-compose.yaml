@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  postgresql:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: willchat
+    ports:
+      - "5432:5432"
+    networks:
+      - willchat-api_network
+
+  api:
+    env_file:
+      - .env.docker
+    build:
+      context: "."
+      dockerfile: Dockerfile
+    container_name: willchat-api
+    command: yarn dev
+    depends_on:
+      - postgresql
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app/
+    networks:
+      - willchat-api_network
+
+volumes:
+  postgresql:
+
+networks:
+  willchat-api_network:
+    driver: bridge
