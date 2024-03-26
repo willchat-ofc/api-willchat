@@ -1,27 +1,20 @@
 import type { Express } from "express";
 import { Router } from "express";
-import fg from "fast-glob";
+import { deleteKeyRouter } from "../routes/delete-key-router";
+import { deleteMessageRouter } from "../routes/delete-message-router";
+import { getKeyRouter } from "../routes/get-key-router";
+import { getMessageByKeyRouter } from "../routes/get-message-router";
+import { addKeyRouter } from "../routes/save-key-router";
+import { addMessage } from "../routes/save-message-router";
 
 export const setupRoutes = (app: Express) => {
   const router = Router();
 
   app.use(router);
-
-  fg.sync([
-    "**/src/main/routes/**-router.ts",
-    "**/src/main/routes/**-router/**-router.ts",
-  ]).map(async (file) => {
-    const fileList = file.split("/");
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
-    const index = fileList.length - 1;
-    console.log(`Loading the file router ${fileList[index]} ...`);
-
-    (
-      await import(
-        `../../../${
-          process.env.JEST_WORKER_ID ? file : file.replace("ts", "js")
-        }`
-      )
-    ).default(router);
-  });
+  deleteKeyRouter(app);
+  deleteMessageRouter(app);
+  getKeyRouter(app);
+  getMessageByKeyRouter(app);
+  addKeyRouter(app);
+  addMessage(app);
 };
