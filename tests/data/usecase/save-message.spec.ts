@@ -50,7 +50,7 @@ describe("DbSaveMessage", () => {
 
     await sut.save(makeFakeRequest);
 
-    expect(saveSpy).toBeCalledWith(makeFakeRequest);
+    expect(saveSpy).toHaveBeenCalledWith(makeFakeRequest);
   });
 
   test("should return message if success", async () => {

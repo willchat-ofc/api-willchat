@@ -14,6 +14,6 @@ describe("SaveKey Validation", () => {
       validations.push(new RequiredFieldValidation(field));
     }
 
-    expect(ValidationComposite).toBeCalledWith(validations);
+    expect(ValidationComposite).toHaveBeenCalledWith(validations);
   });
 });

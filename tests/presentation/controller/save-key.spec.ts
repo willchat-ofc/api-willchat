@@ -75,7 +75,7 @@ describe("SaveKey Controller", () => {
     const validateSpy = jest.spyOn(validator, "validate");
     await sut.handle(fakeHttpRequest);
 
-    expect(validateSpy).toBeCalledWith(fakeHttpRequest.header);
+    expect(validateSpy).toHaveBeenCalledWith(fakeHttpRequest.header);
   });
 
   test("should return serverError if validator throws", async () => {
@@ -102,7 +102,7 @@ describe("SaveKey Controller", () => {
     const decodeSpy = jest.spyOn(saveKey, "save");
     await sut.handle(fakeHttpRequest);
 
-    expect(decodeSpy).toBeCalledWith({
+    expect(decodeSpy).toHaveBeenCalledWith({
       userId: "fake-account-id",
     });
   });
@@ -114,7 +114,7 @@ describe("SaveKey Controller", () => {
       .mockRejectedValueOnce(undefined);
     await sut.handle(fakeHttpRequest);
 
-    expect(decodeSpy).toBeCalledWith({
+    expect(decodeSpy).toHaveBeenCalledWith({
       userId: "fake-account-id",
     });
   });

@@ -49,7 +49,7 @@ describe("GetMessage Database", () => {
 
 		await sut.get(fakeParams);
 
-		expect(getSpy).toBeCalledWith(fakeParams);
+		expect(getSpy).toHaveBeenCalledWith(fakeParams);
 	});
 
 	test("should throw if getMessageRepository throws", async () => {

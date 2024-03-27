@@ -57,7 +57,7 @@ describe("DbSaveKey", () => {
 
     await sut.save(fakeData);
 
-    expect(saveSpy).toBeCalledWith({
+    expect(saveSpy).toHaveBeenCalledWith({
       key: "key",
       userId: "fake-user-id",
     });

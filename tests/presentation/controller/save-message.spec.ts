@@ -78,7 +78,7 @@ describe("SaveMessage Controller", () => {
     const validateSpy = jest.spyOn(validator, "validate");
     await sut.handle(fakeHttpRequest);
 
-    expect(validateSpy).toBeCalledWith(fakeHttpRequest.body);
+    expect(validateSpy).toHaveBeenCalledWith(fakeHttpRequest.body);
   });
 
   test("should return serverError if validator throws", async () => {
@@ -108,7 +108,7 @@ describe("SaveMessage Controller", () => {
     const validateSpy = jest.spyOn(saveMessage, "save");
     await sut.handle(fakeHttpRequest);
 
-    expect(validateSpy).toBeCalledWith(fakeHttpRequest.body);
+    expect(validateSpy).toHaveBeenCalledWith(fakeHttpRequest.body);
   });
 
   test("should return badRequest if saveMessage returns null", async () => {

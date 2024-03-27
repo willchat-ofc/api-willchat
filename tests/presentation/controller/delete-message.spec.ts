@@ -69,7 +69,7 @@ describe("DeleteKey Controller", () => {
     const validateSpy = jest.spyOn(validator, "validate");
     await sut.handle(fakeHttpRequest);
 
-    expect(validateSpy).toBeCalledWith(fakeHttpRequest.header);
+    expect(validateSpy).toHaveBeenCalledWith(fakeHttpRequest.header);
   });
 
   test("should call deleteMessage with correct values", async () => {
@@ -78,7 +78,7 @@ describe("DeleteKey Controller", () => {
 
     await sut.handle(fakeHttpRequest);
 
-    expect(deleteSpy).toBeCalledWith({
+    expect(deleteSpy).toHaveBeenCalledWith({
       key: fakeHttpRequest.header.key,
       messageId: fakeHttpRequest.header.messageid,
       accountId: fakeHttpRequest.body.accountId,

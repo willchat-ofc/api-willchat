@@ -54,7 +54,7 @@ describe("GetKey Controller", () => {
 
     await sut.handle(fakeHttpRequest);
 
-    expect(getSpy).toBeCalledWith({
+    expect(getSpy).toHaveBeenCalledWith({
       userId: "fake-account-id",
     });
   });

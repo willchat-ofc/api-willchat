@@ -39,7 +39,7 @@ describe("DbDeleteKey", () => {
 
     await sut.delete(fakeParams);
 
-    expect(deleteSpy).toBeCalledWith(fakeParams);
+    expect(deleteSpy).toHaveBeenCalledWith(fakeParams);
   });
 
   test("should throw if deleteMessageRepository throws", async () => {

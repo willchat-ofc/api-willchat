@@ -16,6 +16,6 @@ describe("SaveKey Validation", () => {
     }
     validations.push(new UserNameValidation());
 
-    expect(ValidationComposite).toBeCalledWith(validations);
+    expect(ValidationComposite).toHaveBeenCalledWith(validations);
   });
 });

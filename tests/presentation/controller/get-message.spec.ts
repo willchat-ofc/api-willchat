@@ -78,7 +78,7 @@ describe("GetMessage Controller", () => {
     const validateSpy = jest.spyOn(validator, "validate");
     await sut.handle(fakeHttpRequest);
 
-    expect(validateSpy).toBeCalledWith(fakeHttpRequest.params);
+    expect(validateSpy).toHaveBeenCalledWith(fakeHttpRequest.params);
   });
 
   test("should return serverError if validator throws", async () => {
@@ -98,7 +98,7 @@ describe("GetMessage Controller", () => {
 
     await sut.handle(fakeHttpRequest);
 
-    expect(getSpy).toBeCalledWith({
+    expect(getSpy).toHaveBeenCalledWith({
       ...fakeHttpRequest.params,
       ...fakeHttpRequest.header,
     });
