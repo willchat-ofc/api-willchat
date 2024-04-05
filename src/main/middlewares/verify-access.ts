@@ -6,7 +6,7 @@ import { env } from "../config/env";
 export const verifyAccess = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const notNeedAccess = ["/key/message"];
   for (const path of notNeedAccess) {
@@ -16,7 +16,7 @@ export const verifyAccess = async (
   const { body, statusCode } = badRequest(new UnauthorizedError());
 
   try {
-    const accessToken = req.headers.accesstoken as string;
+    const accessToken = req.headers.authorization as string;
     if (!accessToken) return res.status(statusCode).json(body);
     jwt.verify(accessToken, env.secret);
 
